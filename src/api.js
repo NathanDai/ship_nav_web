@@ -58,3 +58,25 @@ export const fetchProducts = async (page, pageSize, subject = '') => {
         };
     }
 };
+
+export const updateMail163 = async () => {
+    try {
+        const response = await fetch('/rest/mail/update_mail_163');
+
+        if (!response.ok) {
+            throw new Error(`API call failed: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.code !== 0) {
+            throw new Error(result.message || 'API returned error code');
+        }
+
+        return result;
+    } catch (error) {
+        console.error("Error updating mail:", error);
+        throw error;
+    }
+};
+

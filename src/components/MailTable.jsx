@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MoreVertical, Star, Trash2, Copy, Edit, Mail, RotateCcw, AlertCircle, Package, Eye, X, Ship } from 'lucide-react';
-import { fetchProducts } from '../api'; // We'll keep using the existing API function for now
+import { fetchProducts, updateMail163 } from '../api'; // We'll keep using the existing API function for now
 import './MailTable.css';
 import Pagination from './Pagination';
 
@@ -16,6 +16,7 @@ const MailTable = () => {
     const [shipInfoModalData, setShipInfoModalData] = useState(null);
     const [subject, setSubject] = useState(''); // Input value
     const [querySubject, setQuerySubject] = useState(''); // Value for API call
+    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         let ignore = false;
@@ -45,10 +46,21 @@ const MailTable = () => {
         return () => {
             ignore = true;
         };
-        return () => {
-            ignore = true;
-        };
-    }, [page, pageSize, querySubject]); // triggering fetch when querySubject changes
+    }, [page, pageSize, querySubject, refreshKey]); // triggering fetch when querySubject changes
+
+
+    const handleRefresh = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            await updateMail163();
+            setRefreshKey(prev => prev + 1);
+        } catch (err) {
+            console.error(err);
+            setError("Failed to update emails. Please try again.");
+            setLoading(false);
+        }
+    };
 
     const toggleSelectAll = (e) => {
         if (e.target.checked) {
@@ -133,7 +145,7 @@ const MailTable = () => {
                             onChange={(e) => setSubject(e.target.value)}
                         />
                     </div>
-                    <button className="btn-secondary" onClick={() => window.location.reload()}>
+                    <button className="btn-secondary" onClick={handleRefresh}>
                         <RotateCcw size={16} />
                         刷新
                     </button>
