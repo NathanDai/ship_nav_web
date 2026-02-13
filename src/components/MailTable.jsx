@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MoreVertical, Star, Trash2, Copy, Edit, Mail, RotateCcw, AlertCircle, Package } from 'lucide-react';
+import { MoreVertical, Star, Trash2, Copy, Edit, Mail, RotateCcw, AlertCircle, Package, Eye, X } from 'lucide-react';
 import { fetchProducts } from '../api'; // We'll keep using the existing API function for now
 import './MailTable.css';
 import Pagination from './Pagination';
@@ -12,6 +12,7 @@ const MailTable = () => {
     const [pageSize] = useState(10);
     const [total, setTotal] = useState(0);
     const [selected, setSelected] = useState([]);
+    const [selectedMail, setSelectedMail] = useState(null);
 
     useEffect(() => {
         let ignore = false;
@@ -90,6 +91,14 @@ const MailTable = () => {
                 {label}
             </span>
         );
+    };
+
+    const handleViewDetails = (mail) => {
+        setSelectedMail(mail);
+    };
+
+    const closeDetails = () => {
+        setSelectedMail(null);
     };
 
     return (
@@ -182,7 +191,9 @@ const MailTable = () => {
                                         <td className="td-date">{mail.date}</td>
                                         <td className="td-status">{getStatusBadge(mail.status)}</td>
                                         <td className="td-action">
-                                            <button className="action-btn"><MoreVertical size={18} /></button>
+                                            <button className="action-btn" onClick={() => handleViewDetails(mail)} title="View Details">
+                                                <MoreVertical size={18} />
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
@@ -199,18 +210,59 @@ const MailTable = () => {
                 onPageChange={setPage}
             />
 
-            {selected.length > 0 && (
-                <div className="floating-toolbar">
-                    <div className="selected-count">{selected.length} selected</div>
-                    <div className="toolbar-divider"></div>
-                    <div className="toolbar-actions">
-                        <button title="Archive" className="toolbar-btn"><Package size={18} /></button>
-                        <button title="Mark as Read" className="toolbar-btn"><Mail size={18} /></button>
-                        <button title="Delete" className="toolbar-btn btn-delete"><Trash2 size={18} /></button>
+            {
+                selected.length > 0 && (
+                    <div className="floating-toolbar">
+                        <div className="selected-count">{selected.length} selected</div>
+                        <div className="toolbar-divider"></div>
+                        <div className="toolbar-actions">
+                            <button title="Archive" className="toolbar-btn"><Package size={18} /></button>
+                            <button title="Mark as Read" className="toolbar-btn"><Mail size={18} /></button>
+                            <button title="Delete" className="toolbar-btn btn-delete"><Trash2 size={18} /></button>
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+
+            {
+                selectedMail && (
+                    <div className="modal-overlay" onClick={closeDetails}>
+                        <div className="modal-content" onClick={e => e.stopPropagation()}>
+                            <button className="modal-close-btn" onClick={closeDetails}>
+                                <X size={24} />
+                            </button>
+
+                            <div className="mail-detail-container">
+                                <div className="mail-detail-subject">
+                                    {selectedMail.subject}
+                                </div>
+
+                                <div className="mail-meta-header">
+                                    <div className="sender-avatar">
+                                        {selectedMail.sender.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div className="meta-info-col">
+                                        <div className="sender-recipient-row">
+                                            <span className="sender-name">{selectedMail.sender}</span>
+                                            <span className="meta-separator">发送给</span>
+                                            <span className="recipient-name">{selectedMail.to_email || '我'}</span>
+                                        </div>
+                                        <div className="meta-date-mobile">{selectedMail.date}</div>
+                                    </div>
+                                    <div className="meta-date">
+                                        {selectedMail.date}
+                                    </div>
+                                </div>
+
+                                <div className="mail-detail-body">
+                                    <pre>{selectedMail.content}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+        </div >
     );
 };
 

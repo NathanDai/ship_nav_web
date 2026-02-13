@@ -30,8 +30,10 @@ export const fetchProducts = async (page, pageSize) => {
                 uid: item.uid,
                 subject: item.subject || 'No Subject',
                 sender: item.from_email || 'Unknown Sender',
+                to_email: item.to_email || '',
                 date: item.time_date,
                 status: item.email_status,
+                content: item.content || '',
             };
         });
 
