@@ -1,0 +1,46 @@
+:root {
+  --bg-color: #F9FAFB;
+  --surface-color: #FFFFFF;
+  --border-color: #EDF2F7;
+  --text-primary: #1A202C;
+  --text-secondary: #718096;
+  --accent-color: #FF7A50;
+
+  --badge-green-bg: #E6F4EA;
+  --badge-green-text: #1E8E3E;
+  --badge-red-bg: #FCE8E6;
+  --badge-red-text: #D93025;
+  --badge-yellow-bg: #FEF7E0;
+  --badge-yellow-text: #F29900;
+
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
