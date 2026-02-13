@@ -13,6 +13,8 @@ const MailTable = () => {
     const [total, setTotal] = useState(0);
     const [selected, setSelected] = useState([]);
     const [selectedMail, setSelectedMail] = useState(null);
+    const [subject, setSubject] = useState(''); // Input value
+    const [querySubject, setQuerySubject] = useState(''); // Value for API call
 
     useEffect(() => {
         let ignore = false;
@@ -21,8 +23,8 @@ const MailTable = () => {
             setLoading(true);
             setError(null);
             try {
-                // Using existing fetchProducts which actually fetches mails
-                const response = await fetchProducts(page, pageSize);
+                // Pass querySubject to fetchProducts
+                const response = await fetchProducts(page, pageSize, querySubject);
                 if (!ignore) {
                     setMails(response.data);
                     setTotal(response.total);
@@ -42,7 +44,10 @@ const MailTable = () => {
         return () => {
             ignore = true;
         };
-    }, [page, pageSize]);
+        return () => {
+            ignore = true;
+        };
+    }, [page, pageSize, querySubject]); // triggering fetch when querySubject changes
 
     const toggleSelectAll = (e) => {
         if (e.target.checked) {
@@ -95,11 +100,20 @@ const MailTable = () => {
 
     const handleViewDetails = (mail) => {
         setSelectedMail(mail);
+        document.body.style.overflow = 'hidden';
     };
 
     const closeDetails = () => {
         setSelectedMail(null);
+        document.body.style.overflow = 'unset';
     };
+
+    // Cleanup effect to restore scroll if component unmounts
+    useEffect(() => {
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
 
     return (
         <div className="mail-table-container">
@@ -110,14 +124,23 @@ const MailTable = () => {
                 </div>
                 <div className="table-controls">
                     <div className="search-wrapper">
-                        <input type="text" placeholder="Search emails..." className="search-input" />
+                        <input
+                            type="text"
+                            placeholder="查询邮件"
+                            className="search-input"
+                            value={subject}
+                            onChange={(e) => setSubject(e.target.value)}
+                        />
                     </div>
                     <button className="btn-secondary" onClick={() => window.location.reload()}>
                         <RotateCcw size={16} />
-                        Refresh
+                        刷新
                     </button>
-                    <button className="btn-primary">
-                        Compose
+                    <button className="btn-primary" onClick={() => {
+                        setPage(1);
+                        setQuerySubject(subject);
+                    }}>
+                        查询
                     </button>
                 </div>
             </div>

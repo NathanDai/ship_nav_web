@@ -1,4 +1,4 @@
-export const fetchProducts = async (page, pageSize) => {
+export const fetchProducts = async (page, pageSize, subject = '') => {
     try {
         const response = await fetch('/rest/mail/get_mail_page', {
             method: 'POST',
@@ -7,7 +7,8 @@ export const fetchProducts = async (page, pageSize) => {
             },
             body: JSON.stringify({
                 page,
-                page_size: pageSize
+                page_size: pageSize,
+                subject
             }),
         });
 
