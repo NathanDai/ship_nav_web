@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MoreVertical, Star, Trash2, Copy, Edit, Mail, RotateCcw, AlertCircle, Package, Eye, X } from 'lucide-react';
+import { MoreVertical, Star, Trash2, Copy, Edit, Mail, RotateCcw, AlertCircle, Package, Eye, X, Ship } from 'lucide-react';
 import { fetchProducts } from '../api'; // We'll keep using the existing API function for now
 import './MailTable.css';
 import Pagination from './Pagination';
@@ -13,6 +13,7 @@ const MailTable = () => {
     const [total, setTotal] = useState(0);
     const [selected, setSelected] = useState([]);
     const [selectedMail, setSelectedMail] = useState(null);
+    const [shipInfoModalData, setShipInfoModalData] = useState(null);
     const [subject, setSubject] = useState(''); // Input value
     const [querySubject, setQuerySubject] = useState(''); // Value for API call
 
@@ -120,7 +121,7 @@ const MailTable = () => {
             <div className="table-header">
                 <div className="header-title">
                     <h2>Inbox</h2>
-                    <span className="mail-count">{total} messages</span>
+                    <span className="mail-count">共 {total} 条</span>
                 </div>
                 <div className="table-controls">
                     <div className="search-wrapper">
@@ -201,9 +202,18 @@ const MailTable = () => {
                                             />
                                         </td>
                                         <td className="td-star">
-                                            <button className="star-btn">
-                                                <Star size={16} />
-                                            </button>
+                                            {mail.status === 2 && (
+                                                <button
+                                                    className="star-btn"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setShipInfoModalData(mail.extracted_ships_info || []);
+                                                    }}
+                                                    title="View Ship Info"
+                                                >
+                                                    <Ship size={16} className="text-blue-500" />
+                                                </button>
+                                            )}
                                         </td>
                                         <td className="td-subject">
                                             <div className="subject-text">{mail.subject}</div>
@@ -280,6 +290,60 @@ const MailTable = () => {
                                 <div className="mail-detail-body">
                                     <pre>{selectedMail.content}</pre>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+
+            {
+                shipInfoModalData && (
+                    <div className="modal-overlay" onClick={() => setShipInfoModalData(null)}>
+                        <div className="modal-content ship-info-modal" onClick={e => e.stopPropagation()}>
+                            <button className="modal-close-btn" onClick={() => setShipInfoModalData(null)}>
+                                <X size={24} />
+                            </button>
+                            <div className="mail-detail-container">
+                                <h3 className="ship-info-title">提取的信息</h3>
+                                {shipInfoModalData.length === 0 ? (
+                                    <p>暂无船舶信息</p>
+                                ) : (
+                                    <div className="ship-list">
+                                        {shipInfoModalData.map((ship, index) => (
+                                            <div key={index} className="ship-item">
+                                                <div className="ship-header">
+                                                    <div>
+                                                        <span className="ship-info-label">船舶名称:</span> {ship.vessel_name}
+                                                    </div>
+                                                    <div>
+                                                        <span className="ship-info-label">IMO:</span> {ship.imo}
+                                                    </div>
+                                                </div>
+                                                <div className="ship-schedule">
+                                                    <h4 className="ship-schedule-title">船期</h4>
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>港口</th>
+                                                                <th>装卸期</th>
+                                                                <th>备注</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {ship.schedule && ship.schedule.map((sch, idx) => (
+                                                                <tr key={idx}>
+                                                                    <td>{sch.port}</td>
+                                                                    <td>{sch.laycan}</td>
+                                                                    <td>{sch.remark || ''}</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

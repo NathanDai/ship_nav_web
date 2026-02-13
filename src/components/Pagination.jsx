@@ -32,7 +32,7 @@ const Pagination = ({ page, pageSize, total, onPageChange }) => {
     return (
         <div className="pagination-container">
             <div className="pagination-info">
-                Showing {startEntry}-{endEntry} of {total} entries
+                显示 {startEntry}-{endEntry}
             </div>
 
             <div className="pagination-controls">
@@ -42,7 +42,7 @@ const Pagination = ({ page, pageSize, total, onPageChange }) => {
                     onClick={() => onPageChange(page - 1)}
                 >
                     <ChevronLeft size={16} />
-                    Previous
+                    上一页
                 </button>
 
                 <div className="page-numbers">
@@ -54,7 +54,7 @@ const Pagination = ({ page, pageSize, total, onPageChange }) => {
                     disabled={page === totalPages}
                     onClick={() => onPageChange(page + 1)}
                 >
-                    Next
+                    下一页
                     <ChevronRight size={16} />
                 </button>
             </div>

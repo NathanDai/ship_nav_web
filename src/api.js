@@ -35,6 +35,7 @@ export const fetchProducts = async (page, pageSize, subject = '') => {
                 date: item.time_date,
                 status: item.email_status,
                 content: item.content || '',
+                extracted_ships_info: item.extracted_ships_info || [],
             };
         });
 
