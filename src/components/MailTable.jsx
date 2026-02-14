@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MoreVertical, Star, Trash2, Copy, Edit, Mail, RotateCcw, AlertCircle, Package, Eye, X, Ship } from 'lucide-react';
-import { fetchProducts, updateMail163 } from '../api'; // We'll keep using the existing API function for now
+import { fetchProducts, updateMail163, getMailSchedule } from '../api'; // We'll keep using the existing API function for now
 import './MailTable.css';
 import Pagination from './Pagination';
+import Toast from './Toast';
 
 const MailTable = () => {
     const [mails, setMails] = useState([]);
@@ -17,6 +18,7 @@ const MailTable = () => {
     const [subject, setSubject] = useState(''); // Input value
     const [querySubject, setQuerySubject] = useState(''); // Value for API call
     const [refreshKey, setRefreshKey] = useState(0);
+    const [toast, setToast] = useState(null); // { message, type }
 
     useEffect(() => {
         let ignore = false;
@@ -55,16 +57,30 @@ const MailTable = () => {
         try {
             await updateMail163();
             setRefreshKey(prev => prev + 1);
+            showToast('Emails updated successfully', 'success');
         } catch (err) {
             console.error(err);
             setError("Failed to update emails. Please try again.");
             setLoading(false);
+            showToast('Failed to update emails', 'error');
         }
     };
 
+    const showToast = (message, type = 'success') => {
+        setToast({ message, type });
+        // Auto-hide is handled by the Toast component itself via onClose callback, 
+        // but we can also manage it here if we want multiple toasts. 
+        // For simplicity, we just set the current toast.
+    };
+
+
+
+    const isSelectable = (status) => status === 0;
+
     const toggleSelectAll = (e) => {
         if (e.target.checked) {
-            setSelected(mails.map(m => m.id));
+            const selectableIds = mails.filter(m => isSelectable(m.status)).map(m => m.id);
+            setSelected(selectableIds);
         } else {
             setSelected([]);
         }
@@ -121,6 +137,22 @@ const MailTable = () => {
         document.body.style.overflow = 'unset';
     };
 
+    const handleGetSchedule = async () => {
+        if (selected.length === 0) return;
+        try {
+            const res = await getMailSchedule(selected);
+            console.log('Schedule response:', res);
+            if (res.code === 0) {
+                showToast('Schedule extraction started successfully', 'success');
+            } else {
+                showToast(res.message || 'Failed to start schedule extraction', 'error');
+            }
+        } catch (error) {
+            console.error('Failed to get schedule:', error);
+            showToast('Failed to start schedule extraction', 'error');
+        }
+    };
+
     // Cleanup effect to restore scroll if component unmounts
     useEffect(() => {
         return () => {
@@ -130,6 +162,13 @@ const MailTable = () => {
 
     return (
         <div className="mail-table-container">
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                />
+            )}
             <div className="table-header">
                 <div className="header-title">
                     <h2>Inbox</h2>
@@ -174,7 +213,7 @@ const MailTable = () => {
                                     <input
                                         type="checkbox"
                                         onChange={toggleSelectAll}
-                                        checked={mails.length > 0 && selected.length === mails.length}
+                                        checked={mails.length > 0 && selected.length > 0 && mails.filter(m => isSelectable(m.status)).every(m => isSelected(m.id))}
                                     />
                                 </th>
                                 <th className="th-star"></th>
@@ -211,6 +250,7 @@ const MailTable = () => {
                                                 type="checkbox"
                                                 checked={isSelected(mail.id)}
                                                 onChange={() => toggleSelect(mail.id)}
+                                                disabled={!isSelectable(mail.status)}
                                             />
                                         </td>
                                         <td className="td-star">
@@ -261,9 +301,7 @@ const MailTable = () => {
                         <div className="selected-count">{selected.length} selected</div>
                         <div className="toolbar-divider"></div>
                         <div className="toolbar-actions">
-                            <button title="Archive" className="toolbar-btn"><Package size={18} /></button>
-                            <button title="Mark as Read" className="toolbar-btn"><Mail size={18} /></button>
-                            <button title="Delete" className="toolbar-btn btn-delete"><Trash2 size={18} /></button>
+                            <button title="Archive" className="toolbar-btn" onClick={handleGetSchedule}><Package size={18} /></button>
                         </div>
                     </div>
                 )

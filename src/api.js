@@ -80,3 +80,30 @@ export const updateMail163 = async () => {
     }
 };
 
+export const getMailSchedule = async (ids) => {
+    try {
+        const response = await fetch('/rest/mail/get_mail_schedule', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ids }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`API call failed: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.code !== 0) {
+            throw new Error(result.message || 'API returned error code');
+        }
+
+        return result;
+    } catch (error) {
+        console.error("Error fetching mail schedule:", error);
+        throw error;
+    }
+};
+
