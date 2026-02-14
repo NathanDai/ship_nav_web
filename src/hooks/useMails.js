@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchMailList, updateMail163, getMailSchedule } from '../api/index.js';
+import { fetchMailList, updateMail163, getMailSchedule, getMailContact } from '../api/index.js';
 import { PAGINATION } from '../constants/config';
 
 /**
@@ -71,6 +71,17 @@ export const useMails = (
         }
     }, []);
 
+    // 获取联系人
+    const fetchContact = useCallback(async (ids) => {
+        try {
+            const result = await getMailContact(ids);
+            return { success: true, data: result };
+        } catch (err) {
+            console.error('Failed to get contact', err);
+            return { success: false, error: err };
+        }
+    }, []);
+
     // 自动获取数据
     useEffect(() => {
         let ignore = false;
@@ -105,5 +116,6 @@ export const useMails = (
         refreshMails,
         searchMails,
         fetchSchedule,
+        fetchContact,
     };
 };

@@ -22,7 +22,8 @@ export const fetchMailList = async (page, pageSize, subject = '') => {
         sender: item.from_email || 'Unknown Sender',
         toEmail: item.to_email || '',
         date: item.time_date,
-        status: item.email_status,
+        emailStatus: item.email_status,
+        contactStatus: item.contact_status,
         content: item.content || '',
         extractedShipsInfo: item.extracted_ships_info || [],
     }));
@@ -48,4 +49,13 @@ export const updateMail163 = async () => {
  */
 export const getMailSchedule = async (ids) => {
     return post('/rest/mail/get_mail_schedule', { ids });
+};
+
+/**
+ * 获取邮件联系人
+ * @param {Array<number>} ids - 邮件ID列表
+ * @returns {Promise}
+ */
+export const getMailContact = async (ids) => {
+    return post('/rest/mail/get_mail_contact', { ids });
 };

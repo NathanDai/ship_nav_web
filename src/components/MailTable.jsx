@@ -1,5 +1,5 @@
 import React from 'react';
-import { MoreVertical, Ship, AlertCircle, Mail, RotateCcw, Package } from 'lucide-react';
+import { MoreVertical, Ship, AlertCircle, Mail, RotateCcw, CalendarClock, Users } from 'lucide-react';
 import { useMails, useSelection, useToast, useModal, useShipDetails } from '../hooks';
 import { isMailSelectable } from '../constants/mailStatus';
 import Badge from './common/Badge/Badge';
@@ -24,6 +24,7 @@ const MailTable = () => {
         refreshMails,
         searchMails,
         fetchSchedule,
+        fetchContact,
     } = useMails();
 
     const { selected, toggleSelectAll, toggleSelect, isSelected, isAllSelected } = useSelection(mails, isMailSelectable);
@@ -45,12 +46,41 @@ const MailTable = () => {
 
     // 处理获取船期
     const handleGetSchedule = async () => {
-        if (selected.length === 0) return;
-        const result = await fetchSchedule(selected);
+        const selectedMails = mails.filter(mail => selected.includes(mail.id));
+        const idsToProcess = selectedMails
+            .filter(mail => mail.emailStatus === 0)
+            .map(mail => mail.id);
+
+        if (idsToProcess.length === 0) {
+            showToast('No emails available for schedule extraction (Status must be 0)', 'info');
+            return;
+        }
+
+        const result = await fetchSchedule(idsToProcess);
         if (result.success) {
-            showToast('Schedule extraction started successfully', 'success');
+            showToast(`Schedule extraction started for ${idsToProcess.length} emails`, 'success');
         } else {
             showToast('Failed to start schedule extraction', 'error');
+        }
+    };
+
+    // 处理获取联系人
+    const handleGetContact = async () => {
+        const selectedMails = mails.filter(mail => selected.includes(mail.id));
+        const idsToProcess = selectedMails
+            .filter(mail => mail.contactStatus === 0)
+            .map(mail => mail.id);
+
+        if (idsToProcess.length === 0) {
+            showToast('No emails available for contact extraction (Status must be 0)', 'info');
+            return;
+        }
+
+        const result = await fetchContact(idsToProcess);
+        if (result.success) {
+            showToast(`Contact extraction started for ${idsToProcess.length} emails`, 'success');
+        } else {
+            showToast('Failed to start contact extraction', 'error');
         }
     };
 
@@ -157,11 +187,10 @@ const MailTable = () => {
                                                 type="checkbox"
                                                 checked={isSelected(mail.id)}
                                                 onChange={() => toggleSelect(mail.id)}
-                                                disabled={!isMailSelectable(mail.status)}
                                             />
                                         </td>
                                         <td className="td-star">
-                                            {mail.status === 2 && (
+                                            {mail.emailStatus === 2 && (
                                                 <button
                                                     className="star-btn"
                                                     onClick={(e) => {
@@ -182,7 +211,7 @@ const MailTable = () => {
                                         </td>
                                         <td className="td-date">{mail.date}</td>
                                         <td className="td-status">
-                                            <Badge status={mail.status} />
+                                            <Badge status={mail.emailStatus} />
                                         </td>
                                         <td className="td-action">
                                             <button
@@ -215,8 +244,11 @@ const MailTable = () => {
                     <div className="selected-count">{selected.length} 个选中</div>
                     <div className="toolbar-divider"></div>
                     <div className="toolbar-actions">
-                        <button title="Archive" className="toolbar-btn" onClick={handleGetSchedule}>
-                            <Package size={18} />
+                        <button title="获取船期" className="toolbar-btn" onClick={handleGetSchedule}>
+                            <CalendarClock size={18} />
+                        </button>
+                        <button title="获取联系人" className="toolbar-btn" onClick={handleGetContact}>
+                            <Users size={18} />
                         </button>
                     </div>
                 </div>

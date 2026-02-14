@@ -22,4 +22,4 @@ export const MAIL_STATUS_CONFIG = {
 };
 
 // 判断邮件是否可选择
-export const isMailSelectable = (status) => status === MAIL_STATUS.UNPROCESSED;
+export const isMailSelectable = (status) => true;

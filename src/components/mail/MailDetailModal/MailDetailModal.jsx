@@ -15,20 +15,18 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                     {mail.subject}
                 </div>
 
-                <div className="mail-meta-header">
-                    <div className="sender-avatar">
-                        {mail.sender.charAt(0).toUpperCase()}
+                <div className="mail-meta-list">
+                    <div className="mail-meta-item">
+                        <span className="mail-meta-label">发件人：</span>
+                        <span className="mail-meta-value">{mail.sender}</span>
                     </div>
-                    <div className="meta-info-col">
-                        <div className="sender-recipient-row">
-                            <span className="sender-name">{mail.sender}</span>
-                            <span className="meta-separator">发送给</span>
-                            <span className="recipient-name">{mail.toEmail || '我'}</span>
-                        </div>
-                        <div className="meta-date-mobile">{mail.date}</div>
+                    <div className="mail-meta-item">
+                        <span className="mail-meta-label">收件人：</span>
+                        <span className="mail-meta-value">{mail.toEmail || '我'}</span>
                     </div>
-                    <div className="meta-date">
-                        {mail.date}
+                    <div className="mail-meta-item">
+                        <span className="mail-meta-label">时　间：</span>
+                        <span className="mail-meta-value">{mail.date}</span>
                     </div>
                 </div>
 

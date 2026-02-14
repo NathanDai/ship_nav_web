@@ -13,7 +13,7 @@ export const useSelection = (items = [], isSelectable = () => true) => {
     const toggleSelectAll = useCallback((checked) => {
         if (checked) {
             const selectableIds = items
-                .filter(item => isSelectable(item.status))
+                .filter(item => isSelectable(item))
                 .map(item => item.id);
             setSelected(selectableIds);
         } else {
@@ -37,7 +37,7 @@ export const useSelection = (items = [], isSelectable = () => true) => {
 
     // 判断是否全选
     const isAllSelected = useCallback(() => {
-        const selectableItems = items.filter(item => isSelectable(item.status));
+        const selectableItems = items.filter(item => isSelectable(item));
         return selectableItems.length > 0 &&
             selectableItems.every(item => selected.includes(item.id));
     }, [items, selected, isSelectable]);
