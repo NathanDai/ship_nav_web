@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MoreVertical, Star, Trash2, Copy, Edit, Mail, RotateCcw, AlertCircle, Package, Eye, X, Ship } from 'lucide-react';
-import { fetchProducts, updateMail163, getMailSchedule } from '../api'; // We'll keep using the existing API function for now
+import { fetchProducts, updateMail163, getMailSchedule, getShipDetails } from '../api'; // We'll keep using the existing API function for now
 import './MailTable.css';
 import Pagination from './Pagination';
 import Toast from './Toast';
@@ -15,6 +15,7 @@ const MailTable = () => {
     const [selected, setSelected] = useState([]);
     const [selectedMail, setSelectedMail] = useState(null);
     const [shipInfoModalData, setShipInfoModalData] = useState(null);
+    const [shipDetailModalData, setShipDetailModalData] = useState(null);
     const [subject, setSubject] = useState(''); // Input value
     const [querySubject, setQuerySubject] = useState(''); // Value for API call
     const [refreshKey, setRefreshKey] = useState(0);
@@ -150,6 +151,21 @@ const MailTable = () => {
         } catch (error) {
             console.error('Failed to get schedule:', error);
             showToast('Failed to start schedule extraction', 'error');
+        }
+    };
+
+    const handleGetShipDetails = async (imo) => {
+        try {
+            const res = await getShipDetails(imo);
+            console.log('Ship details response:', res);
+            if (res.code === 0) {
+                setShipDetailModalData(res.data);
+            } else {
+                showToast(res.message || 'Failed to get ship details', 'error');
+            }
+        } catch (error) {
+            console.error('Failed to get ship details:', error);
+            showToast('Failed to get ship details', 'error');
         }
     };
 
@@ -298,7 +314,7 @@ const MailTable = () => {
             {
                 selected.length > 0 && (
                     <div className="floating-toolbar">
-                        <div className="selected-count">{selected.length} selected</div>
+                        <div className="selected-count">{selected.length} 个选中</div>
                         <div className="toolbar-divider"></div>
                         <div className="toolbar-actions">
                             <button title="Archive" className="toolbar-btn" onClick={handleGetSchedule}><Package size={18} /></button>
@@ -367,6 +383,18 @@ const MailTable = () => {
                                                     </div>
                                                     <div>
                                                         <span className="ship-info-label">IMO:</span> {ship.imo}
+                                                        {ship.imo && (
+                                                            <button
+                                                                className="btn-link ml-2"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    handleGetShipDetails(ship.imo);
+                                                                }}
+                                                                style={{ marginLeft: '8px', padding: '2px 8px', fontSize: '12px', cursor: 'pointer', color: '#1677ff', border: 'none', background: 'none' }}
+                                                            >
+                                                                船舶详情
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 </div>
                                                 <div className="ship-schedule">
@@ -392,6 +420,91 @@ const MailTable = () => {
                                                 </div>
                                             </div>
                                         ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+            {
+                shipDetailModalData && (
+                    <div className="modal-overlay" onClick={() => setShipDetailModalData(null)}>
+                        <div className="modal-content ship-info-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: '800px' }}>
+                            <button className="modal-close-btn" onClick={() => setShipDetailModalData(null)}>
+                                <X size={24} />
+                            </button>
+                            <div className="mail-detail-container">
+                                <h3 className="ship-info-title">船舶详情: {shipDetailModalData.vessel_name}</h3>
+                                <div className="ship-detail-content" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                                    <div className="ship-image" style={{ flex: '1 1 300px' }}>
+                                        {shipDetailModalData.img_url ? (
+                                            <img
+                                                src={shipDetailModalData.img_url}
+                                                alt={shipDetailModalData.vessel_name}
+                                                style={{ width: '100%', borderRadius: '8px', objectFit: 'cover' }}
+                                                onError={(e) => { e.target.style.display = 'none'; }}
+                                            />
+                                        ) : (
+                                            <div style={{ width: '100%', height: '200px', background: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px' }}>
+                                                <Ship size={64} className="text-gray-400" />
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="ship-info-grid" style={{ flex: '1 1 300px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '15px' }}>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>IMO Number</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.imo_number}</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>MMSI</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.mmsi}</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>Call Sign</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.callsign}</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>Vessel Type</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.vessel_type}</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>Year Built</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.year_of_build}</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>Flag</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.flag}</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>Length Overall</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.length_overall_m} m</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>Beam</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.beam_m} m</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>Gross Tonnage</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.gross_tonnage}</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <div className="label" style={{ color: '#888', fontSize: '12px' }}>Deadweight</div>
+                                            <div className="value" style={{ fontWeight: '500' }}>{shipDetailModalData.deadweight} t</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {shipDetailModalData.vessel_url && (
+                                    <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                                        <a
+                                            href={`https://www.vesselfinder.com${shipDetailModalData.vessel_url}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="btn-primary"
+                                            style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '5px' }}
+                                        >
+                                            View on VesselFinder <Eye size={16} />
+                                        </a>
                                     </div>
                                 )}
                             </div>
