@@ -1,0 +1,52 @@
+/* Badge 样式 - 从 MailTable.css 中提取 */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.badge-red {
+    background: #fee;
+    color: #c00;
+}
+
+.badge-red .badge-dot {
+    background: #c00;
+}
+
+.badge-yellow {
+    background: #ffc;
+    color: #c90;
+}
+
+.badge-yellow .badge-dot {
+    background: #c90;
+}
+
+.badge-green {
+    background: #efe;
+    color: #0a0;
+}
+
+.badge-green .badge-dot {
+    background: #0a0;
+}
+
+.badge-gray {
+    background: #f5f5f5;
+    color: #999;
+}
+
+.badge-gray .badge-dot {
+    background: #999;
+}

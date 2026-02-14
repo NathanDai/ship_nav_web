@@ -1,0 +1,78 @@
+/* 船舶信息 Modal 样式 - 从 MailTable.css 中提取 */
+.ship-info-modal {
+    max-width: 700px;
+}
+
+.ship-info-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1a1a1a;
+}
+
+.ship-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ship-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    background: #fafafa;
+}
+
+.ship-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.ship-info-label {
+    font-weight: 600;
+    color: #666;
+}
+
+.ship-schedule-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.ship-schedule table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.ship-schedule th,
+.ship-schedule td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.ship-schedule th {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: #666;
+}
+
+.ship-schedule tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.ship-detail-content {
+    margin-top: 20px;
+}
+
+.info-item {
+    padding: 8px;
+    background: #f9fafb;
+    border-radius: 6px;
+}

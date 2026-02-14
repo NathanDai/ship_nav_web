@@ -16,13 +16,13 @@ const Sidebar = () => {
   return (
     <aside className="sidebar">
       <div className="logo-container">
-        <div className="logo-icon">P</div>
-        <span className="logo-text">Pana</span>
+        <div className="logo-icon">船</div>
+        <span className="logo-text">租船AI</span>
       </div>
 
       <nav className="nav-menu">
         <div className="nav-group">
-          <p className="nav-header">MENU</p>
+          <p className="nav-header">菜单</p>
           <a href="#" className="nav-item">
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
