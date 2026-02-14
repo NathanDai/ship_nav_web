@@ -5,6 +5,7 @@ import { isMailSelectable } from '../constants/mailStatus';
 import Badge from './common/Badge/Badge';
 import MailDetailModal from './mail/MailDetailModal/MailDetailModal';
 import ShipInfoModal, { ShipDetailModal } from './mail/ShipInfoModal/ShipInfoModal';
+import ContactInfoModal from './mail/ContactInfoModal/ContactInfoModal';
 import Pagination from './Pagination';
 import Toast from './Toast';
 import './MailTable.css';
@@ -31,6 +32,7 @@ const MailTable = () => {
     const { toast, showToast, hideToast } = useToast();
     const mailDetailModal = useModal();
     const shipInfoModal = useModal();
+    const contactInfoModal = useModal();
     const shipDetailModal = useModal();
     const { fetchShipDetails } = useShipDetails();
 
@@ -202,6 +204,18 @@ const MailTable = () => {
                                                     <Ship size={16} className="text-blue-500" />
                                                 </button>
                                             )}
+                                            {mail.contactStatus === 2 && (
+                                                <button
+                                                    className="star-btn"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        contactInfoModal.openModal(mail.extractedContactsInfo || []);
+                                                    }}
+                                                    title="View Contact Info"
+                                                >
+                                                    <Users size={16} className="text-green-500" />
+                                                </button>
+                                            )}
                                         </td>
                                         <td className="td-subject">
                                             <div className="subject-text">{mail.subject}</div>
@@ -266,6 +280,12 @@ const MailTable = () => {
                 onClose={shipInfoModal.closeModal}
                 ships={shipInfoModal.data}
                 onViewDetails={handleViewShipDetails}
+            />
+
+            <ContactInfoModal
+                isOpen={contactInfoModal.isOpen}
+                onClose={contactInfoModal.closeModal}
+                contacts={contactInfoModal.data}
             />
 
             <ShipDetailModal

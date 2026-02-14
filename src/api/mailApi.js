@@ -26,6 +26,7 @@ export const fetchMailList = async (page, pageSize, subject = '') => {
         contactStatus: item.contact_status,
         content: item.content || '',
         extractedShipsInfo: item.extracted_ships_info || [],
+        extractedContactsInfo: item.extracted_contacts_info || [],
     }));
 
     return {
