@@ -28,7 +28,7 @@ const Sidebar = () => {
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
           </NavLink>
-          <NavLink to="/" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="/mails" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Package size={20} />
             <span>邮件列表</span>
           </NavLink>

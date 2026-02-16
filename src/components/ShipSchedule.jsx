@@ -76,6 +76,7 @@ const ShipSchedule = () => {
                             <tr>
                                 <th style={{ width: '200px' }}>船名</th>
                                 <th style={{ width: '120px' }}>IMO</th>
+                                <th style={{ width: '160px' }}>邮件时间</th>
                                 <th style={{ width: '200px' }}>港口</th>
                                 <th style={{ width: '400px' }}>Laycan</th>
                                 <th style={{ width: '400px' }}>备注</th>
@@ -113,6 +114,9 @@ const ShipSchedule = () => {
                                                             </td>
                                                             <td rowSpan={scheduleList.length} className="imo-cell">
                                                                 <div className="sender-text">{item.imo}</div>
+                                                            </td>
+                                                            <td rowSpan={scheduleList.length} className="date-cell">
+                                                                <div className="sender-text">{item.time_date}</div>
                                                             </td>
                                                         </>
                                                     )}
