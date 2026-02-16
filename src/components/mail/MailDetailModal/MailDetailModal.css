@@ -1,6 +1,19 @@
 /* 邮件详情 Modal 样式 - 从 MailTable.css 中提取 */
+.detail-modal-fullscreen {
+    width: 98vw !important;
+    max-width: 98vw !important;
+    height: 98vh !important;
+    max-height: 98vh !important;
+    display: flex;
+    flex-direction: column;
+}
+
 .mail-detail-container {
     padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
 }
 
 .mail-detail-subject {
@@ -43,19 +56,27 @@
     display: flex;
     gap: 24px;
     align-items: flex-start;
+    flex: 1;
+    overflow: hidden;
+    /* Prevent body scroll */
 }
 
 .mail-primary-column {
-    flex: 1;
+    flex: 2;
     min-width: 0;
     /* 防止文本溢出撑开 */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
 }
 
 .mail-secondary-column {
-    width: 380px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 0;
+    flex: 1;
+    min-width: 300px;
+    height: 100%;
+    overflow-y: auto;
+    /* Remove sticky since container is scrollable */
 }
 
 /* 提取信息区域 */
@@ -232,8 +253,8 @@
     padding: 20px;
     background: #fafafa;
     border-radius: 8px;
-    min-height: 400px;
-    max-height: calc(80vh - 200px);
+    /* Removed fixed height constraints */
+    flex: 1;
     overflow-y: auto;
     border: 1px solid #e5e7eb;
 }

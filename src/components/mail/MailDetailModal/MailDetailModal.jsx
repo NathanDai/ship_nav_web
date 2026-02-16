@@ -10,7 +10,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
     if (!mail) return null;
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} className="detail-modal-fullscreen">
             <div className="mail-detail-container">
                 <div className="mail-detail-subject">
                     {mail.subject}
