@@ -1,7 +1,12 @@
 import React, { useEffect } from 'react';
 import { Search, Ship } from 'lucide-react';
 import { useShipSchedule } from '../hooks/useShipSchedule';
+import { useModal, useShipDetails, useToast } from '../hooks';
 import Pagination from './Pagination';
+import ShipInfoModal, { ShipDetailModal } from './mail/ShipInfoModal/ShipInfoModal';
+import MailDetailModal from './mail/MailDetailModal/MailDetailModal';
+import { getMailDetail } from '../api/mailApi';
+import Toast from './Toast';
 import './ShipSchedule.css';
 
 const ShipSchedule = () => {
@@ -23,6 +28,31 @@ const ShipSchedule = () => {
     // Local state for search inputs
     const [localVesselName, setLocalVesselName] = React.useState(vesselName);
     const [localImo, setLocalImo] = React.useState(imo);
+
+    const shipDetailModal = useModal();
+    const mailDetailModal = useModal();
+    const { fetchShipDetails } = useShipDetails();
+    const { toast, showToast, hideToast } = useToast();
+
+    const handleViewShipDetails = async (imo) => {
+        // 传递 true 以获取 ETA
+        const result = await fetchShipDetails(imo, true);
+        if (result.success) {
+            shipDetailModal.openModal(result.data);
+        } else {
+            showToast('Failed to get ship details', 'error');
+        }
+    };
+
+    const handleViewMailDetails = async (mailId) => {
+        try {
+            const data = await getMailDetail(mailId);
+            mailDetailModal.openModal(data);
+        } catch (err) {
+            console.error('Failed to load mail details', err);
+            showToast('Failed to load mail details', 'error');
+        }
+    };
 
     const handleLocalSearch = () => {
         setVesselName(localVesselName);
@@ -76,10 +106,11 @@ const ShipSchedule = () => {
                             <tr>
                                 <th style={{ width: '200px' }}>船名</th>
                                 <th style={{ width: '120px' }}>IMO</th>
-                                <th style={{ width: '160px' }}>邮件时间</th>
+                                <th style={{ width: '160px' }}>收件时间</th>
                                 <th style={{ width: '200px' }}>港口</th>
                                 <th style={{ width: '400px' }}>Laycan</th>
-                                <th style={{ width: '400px' }}>备注</th>
+                                <th style={{ width: '200px' }}>备注</th>
+                                <th style={{ width: '120px' }}>操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -113,7 +144,14 @@ const ShipSchedule = () => {
                                                                 <div className="subject-text">{item.vessel_name}</div>
                                                             </td>
                                                             <td rowSpan={scheduleList.length} className="imo-cell">
-                                                                <div className="sender-text">{item.imo}</div>
+                                                                <div
+                                                                    className="sender-text"
+                                                                    onClick={() => handleViewShipDetails(item.imo)}
+                                                                    style={{ cursor: 'pointer', color: '#1677ff', textDecoration: 'underline' }}
+                                                                    title="Click to view ship details"
+                                                                >
+                                                                    {item.imo}
+                                                                </div>
                                                             </td>
                                                             <td rowSpan={scheduleList.length} className="date-cell">
                                                                 <div className="sender-text">{item.time_date}</div>
@@ -129,6 +167,16 @@ const ShipSchedule = () => {
                                                     <td className="schedule-cell-content">
                                                         {scheduleItem ? (scheduleItem.remark || '-') : '-'}
                                                     </td>
+                                                    {sIndex === 0 && (
+                                                        <td rowSpan={scheduleList.length} className="action-cell">
+                                                            <button
+                                                                className="btn-text"
+                                                                onClick={() => handleViewMailDetails(item.mail_id)}
+                                                            >
+                                                                查看详情
+                                                            </button>
+                                                        </td>
+                                                    )}
                                                 </tr>
                                             ))}
                                         </React.Fragment>
@@ -146,6 +194,27 @@ const ShipSchedule = () => {
                 total={total}
                 onPageChange={setPage}
             />
+
+            {/* Modals */}
+            <ShipDetailModal
+                isOpen={shipDetailModal.isOpen}
+                onClose={shipDetailModal.closeModal}
+                shipDetail={shipDetailModal.data}
+            />
+            <MailDetailModal
+                isOpen={mailDetailModal.isOpen}
+                onClose={mailDetailModal.closeModal}
+                mail={mailDetailModal.data}
+            />
+
+            {/* Toast Notification */}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={hideToast}
+                />
+            )}
         </div>
     );
 };

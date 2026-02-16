@@ -37,19 +37,212 @@
     word-break: break-all;
 }
 
+
+/* 内容区域布局 */
+.mail-content-display {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.mail-primary-column {
+    flex: 1;
+    min-width: 0;
+    /* 防止文本溢出撑开 */
+}
+
+.mail-secondary-column {
+    width: 380px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+}
+
+/* 提取信息区域 */
+.mail-extracted-section {
+    margin-bottom: 24px;
+    padding: 20px;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.extracted-group {
+    margin-bottom: 24px;
+}
+
+.extracted-group:last-child {
+    margin-bottom: 0;
+}
+
+.extracted-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 16px;
+}
+
+.ships-grid,
+.contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+}
+
+/* 船舶卡片 */
+.ship-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.ship-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 12px;
+}
+
+.ship-name {
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 15px;
+}
+
+.ship-imo {
+    font-size: 13px;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+.schedule-item {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.schedule-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.schedule-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.icon-muted {
+    color: #94a3b8;
+}
+
+.port-name {
+    font-weight: 500;
+    color: #334155;
+}
+
+.schedule-row .label {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.schedule-row .value {
+    color: #334155;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.schedule-remark {
+    font-size: 13px;
+    color: #64748b;
+    background: #fffbeb;
+    padding: 6px;
+    border-radius: 4px;
+    margin-top: 6px;
+    margin-left: 22px;
+    /* aligns with content */
+}
+
+/* 联系人卡片 */
+.contact-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.contact-header {
+    margin-bottom: 12px;
+}
+
+.contact-name {
+    font-weight: 600;
+    color: #0f172a;
+    font-size: 15px;
+}
+
+.contact-title {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.contact-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #334155;
+}
+
+.contact-row svg {
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.contact-row a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.contact-row a:hover {
+    text-decoration: underline;
+}
+
 .mail-detail-body {
     padding: 20px;
     background: #fafafa;
     border-radius: 8px;
-    max-height: 400px;
+    min-height: 400px;
+    max-height: calc(80vh - 200px);
     overflow-y: auto;
+    border: 1px solid #e5e7eb;
 }
 
 .mail-detail-body pre {
     white-space: pre-wrap;
     word-wrap: break-word;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 13px;
     line-height: 1.6;
     color: #333;
     margin: 0;

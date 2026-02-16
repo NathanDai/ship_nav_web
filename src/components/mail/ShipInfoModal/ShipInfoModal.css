@@ -76,3 +76,110 @@
     background: #f9fafb;
     border-radius: 6px;
 }
+
+/* 航次信息样式 */
+.voyage-info {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 5px;
+}
+
+.voyage-route {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.port-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+    /* 防止文本溢出撑开 */
+}
+
+.port-info.from {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.port-info.to {
+    align-items: flex-end;
+    text-align: right;
+}
+
+.port-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+}
+
+.from-icon {
+    background: #eff6ff;
+    color: #3b82f6;
+}
+
+.to-icon {
+    background: #f0fdf4;
+    color: #22c55e;
+}
+
+.port-label {
+    font-size: 11px;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.port-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* width: 100%; removed to allow flex to work better */
+    max-width: 120px;
+}
+
+.port-time {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 2px;
+}
+
+/* 箭头区域 */
+.route-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    color: #94a3b8;
+    flex-shrink: 0;
+}
+
+.arrow-line {
+    width: 40px;
+    height: 1px;
+    background: #e2e8f0;
+    margin-bottom: -10px;
+    /* 让线在箭头后面/中间 */
+    display: none;
+    /* 暂时隐藏线，只用箭头 */
+}
+
+.arrow-icon {
+    color: #cbd5e1;
+}

@@ -60,3 +60,27 @@ export const getMailSchedule = async (ids) => {
 export const getMailContact = async (ids) => {
     return post('/rest/mail/get_mail_contact', { ids });
 };
+
+/**
+ * 获取邮件详情
+ * @param {string|number} id - 邮件ID
+ * @returns {Promise}
+ */
+export const getMailDetail = async (id) => {
+    const data = await post('/rest/mail/get_mail_detail', { id: parseInt(id) });
+
+    // 映射数据格式，保持与列表一致
+    return {
+        id: data.id,
+        uid: data.uid,
+        subject: data.subject || 'No Subject',
+        sender: data.from_email || 'Unknown Sender',
+        toEmail: data.to_email || '',
+        date: data.time_date,
+        emailStatus: data.email_status,
+        contactStatus: data.contact_status,
+        content: data.content || '',
+        extractedShipsInfo: data.extracted_ships_info || [],
+        extractedContactsInfo: data.extracted_contacts_info || [],
+    };
+};
