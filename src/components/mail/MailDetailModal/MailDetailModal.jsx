@@ -1,13 +1,34 @@
 import React, { useState } from 'react';
 import Modal from '../../common/Modal/Modal';
-import { Ship, Anchor, Phone, Mail, User, PhoneCall, MessageCircle, Linkedin } from 'lucide-react';
+import { Ship, Anchor, Phone, Mail, User, PhoneCall, MessageCircle, Linkedin, Trash } from 'lucide-react';
+import { cleanMail } from '../../../api/mailApi';
 import './MailDetailModal.css';
 
 /**
  * 邮件详情 Modal
  */
 const MailDetailModal = ({ isOpen, onClose, mail }) => {
+    const [cleaning, setCleaning] = useState(false);
+
     if (!mail) return null;
+
+    const handleClean = async () => {
+        if (!window.confirm('Are you sure you want to clear the extracted information?')) {
+            return;
+        }
+
+        setCleaning(true);
+        try {
+            await cleanMail(mail.id);
+            onClose();
+            alert('Extracted information cleared successfully.');
+        } catch (error) {
+            console.error('Failed to clear mail info', error);
+            alert('Failed to clear extracted information.');
+        } finally {
+            setCleaning(false);
+        }
+    };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} className="detail-modal-fullscreen">
@@ -42,6 +63,30 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                     {/* Right Column: Extracted Information */}
                     {(mail.extractedShipsInfo?.length > 0 || mail.extractedContactsInfo?.length > 0) && (
                         <div className="mail-secondary-column">
+                            <div className="mail-extracted-actions" style={{ marginBottom: '10px', textAlign: 'right' }}>
+                                <button
+                                    className="btn-text-danger"
+                                    onClick={handleClean}
+                                    disabled={cleaning}
+                                    style={{
+                                        color: '#ff4d4f',
+                                        border: '1px solid #ff4d4f',
+                                        background: 'none',
+                                        cursor: 'pointer',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        fontSize: '12px',
+                                        padding: '4px 8px',
+                                        borderRadius: '4px',
+                                        marginLeft: 'auto'
+                                    }}
+                                >
+                                    <Trash size={14} />
+                                    {cleaning ? 'Clearing...' : 'Clear Extracted Info'}
+                                </button>
+                            </div>
+
                             <div className="mail-extracted-section">
                                 {/* Extracted Ships */}
                                 {mail.extractedShipsInfo?.length > 0 && (

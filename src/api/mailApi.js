@@ -84,3 +84,12 @@ export const getMailDetail = async (id) => {
         extractedContactsInfo: data.extracted_contacts_info || [],
     };
 };
+
+/**
+ * 清除邮件提取信息
+ * @param {string|number} id - 邮件ID
+ * @returns {Promise}
+ */
+export const cleanMail = async (id) => {
+    return post('/rest/mail/clean_mail', { id });
+};
