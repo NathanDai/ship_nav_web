@@ -104,13 +104,16 @@ const ShipSchedule = () => {
                     <table>
                         <thead>
                             <tr>
-                                <th style={{ width: '200px' }}>船名</th>
-                                <th style={{ width: '120px' }}>IMO</th>
-                                <th style={{ width: '160px' }}>收件时间</th>
-                                <th style={{ width: '200px' }}>港口</th>
-                                <th style={{ width: '400px' }}>Laycan</th>
-                                <th style={{ width: '200px' }}>备注</th>
-                                <th style={{ width: '120px' }}>操作</th>
+                                <th style={{ width: '150px' }}>船名</th>
+                                <th style={{ width: '100px' }}>IMO</th>
+                                <th style={{ width: '120px' }}>船型</th>
+                                <th style={{ width: '100px' }}>载重吨</th>
+                                <th style={{ width: '100px' }}>建造年份</th>
+                                <th style={{ width: '140px' }}>收件时间</th>
+                                <th style={{ width: '180px' }}>港口</th>
+                                <th style={{ width: '250px' }}>装卸期</th>
+                                <th style={{ width: '150px' }}>备注</th>
+                                <th style={{ width: '100px' }}>操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -152,6 +155,15 @@ const ShipSchedule = () => {
                                                                 >
                                                                     {item.imo}
                                                                 </div>
+                                                            </td>
+                                                            <td rowSpan={scheduleList.length} className="type-cell">
+                                                                <div className="sender-text">{item.vessel_type || '-'}</div>
+                                                            </td>
+                                                            <td rowSpan={scheduleList.length} className="dwt-cell">
+                                                                <div className="sender-text">{item.deadweight || '-'}</div>
+                                                            </td>
+                                                            <td rowSpan={scheduleList.length} className="built-cell">
+                                                                <div className="sender-text">{item.year_of_build || '-'}</div>
                                                             </td>
                                                             <td rowSpan={scheduleList.length} className="date-cell">
                                                                 <div className="sender-text">{item.time_date}</div>
