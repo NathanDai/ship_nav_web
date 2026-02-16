@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
   Package,
@@ -23,37 +24,37 @@ const Sidebar = () => {
       <nav className="nav-menu">
         <div className="nav-group">
           <p className="nav-header">菜单</p>
-          <a href="#" className="nav-item">
+          <NavLink to="/dashboard" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
-          </a>
-          <a href="#" className="nav-item active">
+          </NavLink>
+          <NavLink to="/" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Package size={20} />
             <span>邮件列表</span>
-          </a>
-          <a href="#" className="nav-item">
+          </NavLink>
+          <NavLink to="/schedule" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <ShoppingCart size={20} />
-            <span>Orders</span>
-          </a>
-          <a href="#" className="nav-item">
+            <span>船舶排期</span>
+          </NavLink>
+          <NavLink to="/customers" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Users size={20} />
             <span>Customers</span>
-          </a>
-          <a href="#" className="nav-item">
+          </NavLink>
+          <NavLink to="/analytics" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <BarChart2 size={20} />
             <span>Analytics</span>
-          </a>
+          </NavLink>
         </div>
 
         <div className="nav-group bottom-group">
-          <a href="#" className="nav-item">
+          <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Settings size={20} />
             <span>Settings</span>
-          </a>
-          <a href="#" className="nav-item">
+          </NavLink>
+          <NavLink to="/help" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <HelpCircle size={20} />
             <span>Help & Support</span>
-          </a>
+          </NavLink>
 
           <div className="nav-item darkmode-toggle">
             <div className="toggle-label">

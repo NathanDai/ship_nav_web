@@ -110,7 +110,7 @@ const MailTable = () => {
             {/* 表头 */}
             <div className="table-header">
                 <div className="header-title">
-                    <h2>Inbox</h2>
+                    <h2>邮件列表</h2>
                     <span className="mail-count">共 {total} 条</span>
                 </div>
                 <div className="table-controls">
