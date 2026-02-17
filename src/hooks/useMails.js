@@ -22,6 +22,8 @@ export const useMails = (
     const [querySubject, setQuerySubject] = useState('');
     const [refreshKey, setRefreshKey] = useState(0);
 
+    const [searchTrigger, setSearchTrigger] = useState(0);
+
     // 获取邮件列表
     const fetchMails = useCallback(async () => {
         setLoading(true);
@@ -36,7 +38,7 @@ export const useMails = (
         } finally {
             setLoading(false);
         }
-    }, [page, pageSize, querySubject]);
+    }, [page, pageSize, querySubject, searchTrigger]);
 
     // 刷新邮件
     const refreshMails = useCallback(async () => {
@@ -58,6 +60,7 @@ export const useMails = (
     const searchMails = useCallback(() => {
         setPage(PAGINATION.DEFAULT_PAGE);
         setQuerySubject(subject);
+        setSearchTrigger(prev => prev + 1);
     }, [subject]);
 
     // 获取船期

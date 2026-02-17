@@ -3,6 +3,7 @@ import { MoreVertical, Ship, AlertCircle, Mail, RotateCcw, CalendarClock, Users 
 import { useMails, useSelection, useToast, useModal, useShipDetails } from '../hooks';
 import { isMailSelectable } from '../constants/mailStatus';
 import Badge from './common/Badge/Badge';
+import QueueStatus from './common/QueueStatus/QueueStatus';
 import MailDetailModal from './mail/MailDetailModal/MailDetailModal';
 import ShipInfoModal, { ShipDetailModal } from './mail/ShipInfoModal/ShipInfoModal';
 import ContactInfoModal from './mail/ContactInfoModal/ContactInfoModal';
@@ -114,6 +115,7 @@ const MailTable = () => {
                     <span className="mail-count">共 {total} 条</span>
                 </div>
                 <div className="table-controls">
+                    <QueueStatus />
                     <div className="search-wrapper">
                         <input
                             type="text"
@@ -125,7 +127,7 @@ const MailTable = () => {
                     </div>
                     <button className="btn-secondary" onClick={handleRefresh}>
                         <RotateCcw size={16} />
-                        刷新
+                        刷新邮箱
                     </button>
                     <button className="btn-primary" onClick={searchMails}>
                         查询
