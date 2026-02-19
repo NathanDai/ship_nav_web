@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Search, Ship } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Ship, AlertCircle } from 'lucide-react';
 import { useShipSchedule } from '../hooks/useShipSchedule';
 import { useModal, useShipDetails, useToast } from '../hooks';
 import Pagination from './Pagination';
@@ -7,7 +7,69 @@ import ShipInfoModal, { ShipDetailModal } from './mail/ShipInfoModal/ShipInfoMod
 import MailDetailModal from './mail/MailDetailModal/MailDetailModal';
 import { getMailDetail } from '../api/mailApi';
 import Toast from './Toast';
+import './common/Table.css';
+import './common/Button.css';
 import './ShipSchedule.css';
+
+const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) => {
+    const scheduleList = item.schedule && item.schedule.length > 0 ? item.schedule : [null];
+
+    return (
+        <React.Fragment>
+            {scheduleList.map((scheduleItem, sIndex) => (
+                <tr key={`${index}-${sIndex}`} className={sIndex === 0 ? 'ship-row-start' : ''}>
+                    {sIndex === 0 && (
+                        <>
+                            <td rowSpan={scheduleList.length} className="vessel-cell">
+                                <div className="subject-text">{item.vessel_name}</div>
+                            </td>
+                            <td rowSpan={scheduleList.length} className="imo-cell">
+                                <div
+                                    className="link-text"
+                                    onClick={() => onViewShipDetails(item.imo)}
+                                    title="Click to view ship details"
+                                >
+                                    {item.imo}
+                                </div>
+                            </td>
+                            <td rowSpan={scheduleList.length} className="type-cell">
+                                {item.vessel_type || '-'}
+                            </td>
+                            <td rowSpan={scheduleList.length} className="dwt-cell">
+                                {item.deadweight || '-'}
+                            </td>
+                            <td rowSpan={scheduleList.length} className="built-cell">
+                                {item.year_of_build || '-'}
+                            </td>
+                            <td rowSpan={scheduleList.length} className="date-cell">
+                                <div className="text-secondary">{item.time_date}</div>
+                            </td>
+                        </>
+                    )}
+                    <td className="schedule-cell-content">
+                        {scheduleItem ? scheduleItem.port : '-'}
+                    </td>
+                    <td className="schedule-cell-content">
+                        {scheduleItem ? scheduleItem.laycan : '-'}
+                    </td>
+                    <td className="schedule-cell-content">
+                        {scheduleItem ? (scheduleItem.remark || '-') : '-'}
+                    </td>
+                    {sIndex === 0 && (
+                        <td rowSpan={scheduleList.length} className="action-cell">
+                            <button
+                                className="btn-ghost btn-sm"
+                                onClick={() => onViewMailDetails(item.mail_id)}
+                            >
+                                Details
+                            </button>
+                        </td>
+                    )}
+                </tr>
+            ))}
+        </React.Fragment>
+    );
+};
 
 const ShipSchedule = () => {
     const {
@@ -26,8 +88,8 @@ const ShipSchedule = () => {
     } = useShipSchedule();
 
     // Local state for search inputs
-    const [localVesselName, setLocalVesselName] = React.useState(vesselName);
-    const [localImo, setLocalImo] = React.useState(imo);
+    const [localVesselName, setLocalVesselName] = useState(vesselName);
+    const [localImo, setLocalImo] = useState(imo);
 
     const shipDetailModal = useModal();
     const mailDetailModal = useModal();
@@ -35,7 +97,6 @@ const ShipSchedule = () => {
     const { toast, showToast, hideToast } = useToast();
 
     const handleViewShipDetails = async (imo) => {
-        // 传递 true 以获取 ETA
         const result = await fetchShipDetails(imo, true);
         if (result.success) {
             shipDetailModal.openModal(result.data);
@@ -61,17 +122,17 @@ const ShipSchedule = () => {
     };
 
     return (
-        <div className="mail-table-container">
+        <div className="ship-schedule-container">
             <div className="table-header">
                 <div className="header-title">
-                    <h2>船舶排期</h2>
-                    <span className="mail-count">共 {total} 条</span>
+                    <h2>Ship Schedule</h2>
+                    <span className="mail-count">Total {total} items</span>
                 </div>
                 <div className="table-controls">
                     <div className="search-wrapper">
                         <input
                             type="text"
-                            placeholder="船名"
+                            placeholder="Vessel Name"
                             className="search-input"
                             value={localVesselName}
                             onChange={(e) => setLocalVesselName(e.target.value)}
@@ -81,7 +142,7 @@ const ShipSchedule = () => {
                     <div className="search-wrapper">
                         <input
                             type="text"
-                            placeholder="IMO 编号"
+                            placeholder="IMO Number"
                             className="search-input"
                             value={localImo}
                             onChange={(e) => setLocalImo(e.target.value)}
@@ -89,8 +150,8 @@ const ShipSchedule = () => {
                         />
                     </div>
                     <button className="btn-primary" onClick={handleLocalSearch}>
-                        <Search size={16} style={{ marginRight: '8px' }} />
-                        查询
+                        <Search size={16} />
+                        Search
                     </button>
                 </div>
             </div>
@@ -98,102 +159,54 @@ const ShipSchedule = () => {
             <div className="table-wrapper">
                 {error ? (
                     <div className="error-state">
-                        <div className="error-message">{error}</div>
+                        <AlertCircle size={48} className="error-icon" />
+                        <h3>Something went wrong</h3>
+                        <p>{error}</p>
                     </div>
                 ) : (
                     <table>
                         <thead>
                             <tr>
-                                <th style={{ width: '150px' }}>船名</th>
+                                <th style={{ width: '150px' }}>Vessel</th>
                                 <th style={{ width: '100px' }}>IMO</th>
-                                <th style={{ width: '120px' }}>船型</th>
-                                <th style={{ width: '100px' }}>载重吨</th>
-                                <th style={{ width: '100px' }}>建造年份</th>
-                                <th style={{ width: '140px' }}>收件时间</th>
-                                <th style={{ width: '180px' }}>港口</th>
-                                <th style={{ width: '250px' }}>装卸期</th>
-                                <th style={{ width: '150px' }}>备注</th>
-                                <th style={{ width: '100px' }}>操作</th>
+                                <th style={{ width: '100px' }}>Type</th>
+                                <th style={{ width: '90px' }}>DWT</th>
+                                <th style={{ width: '80px' }}>Built</th>
+                                <th style={{ width: '140px' }}>Date</th>
+                                <th style={{ width: '180px' }}>Port</th>
+                                <th style={{ width: '250px' }}>Open</th>
+                                <th>Remark</th>
+                                <th style={{ width: '100px' }}>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>
-                                        <td colSpan="5" className="skeleton-cell">
+                                        <td colSpan="10" className="skeleton-cell">
                                             <div className="skeleton-line"></div>
                                         </td>
                                     </tr>
                                 ))
                             ) : schedules.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" className="empty-state">
+                                    <td colSpan="10" className="empty-state">
                                         <div className="empty-content">
                                             <Ship size={48} />
-                                            <p>暂无数据</p>
+                                            <p>No schedules found</p>
                                         </div>
                                     </td>
                                 </tr>
                             ) : (
-                                schedules.map((item, index) => {
-                                    const scheduleList = item.schedule && item.schedule.length > 0 ? item.schedule : [null];
-                                    return (
-                                        <React.Fragment key={index}>
-                                            {scheduleList.map((scheduleItem, sIndex) => (
-                                                <tr key={`${index}-${sIndex}`} className={sIndex === 0 ? 'ship-row-start' : ''}>
-                                                    {sIndex === 0 && (
-                                                        <>
-                                                            <td rowSpan={scheduleList.length} className="vessel-cell">
-                                                                <div className="subject-text">{item.vessel_name}</div>
-                                                            </td>
-                                                            <td rowSpan={scheduleList.length} className="imo-cell">
-                                                                <div
-                                                                    className="sender-text"
-                                                                    onClick={() => handleViewShipDetails(item.imo)}
-                                                                    style={{ cursor: 'pointer', color: '#1677ff', textDecoration: 'underline' }}
-                                                                    title="Click to view ship details"
-                                                                >
-                                                                    {item.imo}
-                                                                </div>
-                                                            </td>
-                                                            <td rowSpan={scheduleList.length} className="type-cell">
-                                                                <div className="sender-text">{item.vessel_type || '-'}</div>
-                                                            </td>
-                                                            <td rowSpan={scheduleList.length} className="dwt-cell">
-                                                                <div className="sender-text">{item.deadweight || '-'}</div>
-                                                            </td>
-                                                            <td rowSpan={scheduleList.length} className="built-cell">
-                                                                <div className="sender-text">{item.year_of_build || '-'}</div>
-                                                            </td>
-                                                            <td rowSpan={scheduleList.length} className="date-cell">
-                                                                <div className="sender-text">{item.time_date}</div>
-                                                            </td>
-                                                        </>
-                                                    )}
-                                                    <td className="schedule-cell-content">
-                                                        {scheduleItem ? scheduleItem.port : '-'}
-                                                    </td>
-                                                    <td className="schedule-cell-content">
-                                                        {scheduleItem ? scheduleItem.laycan : '-'}
-                                                    </td>
-                                                    <td className="schedule-cell-content">
-                                                        {scheduleItem ? (scheduleItem.remark || '-') : '-'}
-                                                    </td>
-                                                    {sIndex === 0 && (
-                                                        <td rowSpan={scheduleList.length} className="action-cell">
-                                                            <button
-                                                                className="btn-text"
-                                                                onClick={() => handleViewMailDetails(item.mail_id)}
-                                                            >
-                                                                查看详情
-                                                            </button>
-                                                        </td>
-                                                    )}
-                                                </tr>
-                                            ))}
-                                        </React.Fragment>
-                                    );
-                                })
+                                schedules.map((item, index) => (
+                                    <ShipScheduleRow
+                                        key={index}
+                                        item={item}
+                                        index={index}
+                                        onViewShipDetails={handleViewShipDetails}
+                                        onViewMailDetails={handleViewMailDetails}
+                                    />
+                                ))
                             )}
                         </tbody>
                     </table>

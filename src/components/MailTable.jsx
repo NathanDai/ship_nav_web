@@ -10,6 +10,8 @@ import ShipInfoModal, { ShipDetailModal } from './mail/ShipInfoModal/ShipInfoMod
 import ContactInfoModal from './mail/ContactInfoModal/ContactInfoModal';
 import Pagination from './Pagination';
 import Toast from './Toast';
+import './common/Table.css';
+import './common/Button.css';
 import './MailTable.css';
 
 const MailTable = () => {
@@ -131,7 +133,7 @@ const MailTable = () => {
                     <div className="search-wrapper">
                         <input
                             type="text"
-                            placeholder="查询邮件"
+                            placeholder="Search emails..."
                             className="search-input"
                             value={subject}
                             onChange={(e) => setSubject(e.target.value)}
@@ -139,10 +141,10 @@ const MailTable = () => {
                     </div>
                     <button className="btn-secondary" onClick={handleRefresh}>
                         <RotateCcw size={16} />
-                        刷新邮箱
+                        Refresh
                     </button>
                     <button className="btn-primary" onClick={searchMails}>
-                        查询
+                        Search
                     </button>
                 </div>
             </div>

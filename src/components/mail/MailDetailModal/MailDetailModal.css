@@ -1,70 +1,74 @@
-/* 邮件详情 Modal 样式 - 从 MailTable.css 中提取 */
+/* MailDetailModal.css - Refactored */
+
 .detail-modal-fullscreen {
-    width: 98vw !important;
-    max-width: 98vw !important;
-    height: 98vh !important;
-    max-height: 98vh !important;
+    width: 95vw !important;
+    max-width: 1400px !important;
+    height: 90vh !important;
+    max-height: 90vh !important;
     display: flex;
     flex-direction: column;
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg) !important;
 }
 
 .mail-detail-container {
-    padding: 24px;
+    padding: var(--spacing-xl);
     height: 100%;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    background-color: var(--surface-color);
 }
 
 .mail-detail-subject {
     font-size: 24px;
-    font-weight: 600;
-    color: #1a1a1a;
-    margin-bottom: 20px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-lg);
     line-height: 1.3;
+    letter-spacing: -0.01em;
 }
 
-/* 邮件元数据列表样式 */
+/* Meta List */
 .mail-meta-list {
-    padding: 16px 0;
-    border-bottom: 1px solid #e5e7eb;
-    margin-bottom: 24px;
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: var(--spacing-lg);
 }
 
 .mail-meta-item {
     display: flex;
-    padding: 8px 0;
-    font-size: 14px;
+    padding: 6px 0;
+    font-size: var(--font-size-sm);
     line-height: 1.5;
 }
 
 .mail-meta-label {
-    color: #666;
-    min-width: 70px;
+    color: var(--text-secondary);
+    min-width: 80px;
     flex-shrink: 0;
+    font-weight: 500;
 }
 
 .mail-meta-value {
-    color: #1a1a1a;
+    color: var(--text-primary);
     flex: 1;
     word-break: break-all;
 }
 
-
-/* 内容区域布局 */
+/* Layout */
 .mail-content-display {
     display: flex;
-    gap: 24px;
+    gap: var(--spacing-xl);
     align-items: flex-start;
     flex: 1;
     overflow: hidden;
-    /* Prevent body scroll */
 }
 
 .mail-primary-column {
     flex: 2;
     min-width: 0;
-    /* 防止文本溢出撑开 */
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -73,23 +77,25 @@
 
 .mail-secondary-column {
     flex: 1;
-    min-width: 300px;
+    min-width: 320px;
+    max-width: 400px;
     height: 100%;
     overflow-y: auto;
-    /* Remove sticky since container is scrollable */
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
 }
 
-/* 提取信息区域 */
+/* Extracted Info Section */
 .mail-extracted-section {
-    margin-bottom: 24px;
-    padding: 20px;
-    background-color: #f8fafc;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
+    padding: var(--spacing-md);
+    background-color: var(--bg-color);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
 }
 
 .extracted-group {
-    margin-bottom: 24px;
+    margin-bottom: var(--spacing-lg);
 }
 
 .extracted-group:last-child {
@@ -100,127 +106,131 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
-    color: #334155;
-    margin-bottom: 16px;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .ships-grid,
 .contacts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
 }
 
-/* 船舶卡片 */
-.ship-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+/* Cards */
+.ship-card,
+.contact-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow var(--transition-fast);
 }
 
-.ship-card-header {
+.ship-card:hover,
+.contact-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.ship-card-header,
+.contact-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #f1f5f9;
+    align-items: flex-start;
     margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.ship-name {
+.ship-name,
+.contact-name {
     font-weight: 600;
-    color: #0f172a;
+    color: var(--text-primary);
     font-size: 15px;
 }
 
 .ship-imo {
-    font-size: 13px;
-    color: #64748b;
-    background: #f1f5f9;
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: var(--surface-hover);
     padding: 2px 8px;
-    border-radius: 4px;
-}
-
-.schedule-item {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 1px dashed #e2e8f0;
-}
-
-.schedule-item:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: none;
-}
-
-.schedule-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
-    font-size: 14px;
-}
-
-.icon-muted {
-    color: #94a3b8;
-}
-
-.port-name {
-    font-weight: 500;
-    color: #334155;
-}
-
-.schedule-row .label {
-    color: #64748b;
-    font-size: 13px;
-}
-
-.schedule-row .value {
-    color: #334155;
-    font-weight: 500;
-    font-size: 13px;
-}
-
-.schedule-remark {
-    font-size: 13px;
-    color: #64748b;
-    background: #fffbeb;
-    padding: 6px;
-    border-radius: 4px;
-    margin-top: 6px;
-    margin-left: 22px;
-    /* aligns with content */
-}
-
-/* 联系人卡片 */
-.contact-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.contact-header {
-    margin-bottom: 12px;
-}
-
-.contact-name {
-    font-weight: 600;
-    color: #0f172a;
-    font-size: 15px;
+    border-radius: 100px;
+    font-family: 'Roboto Mono', monospace;
 }
 
 .contact-title {
     font-size: 13px;
-    color: #64748b;
+    color: var(--text-secondary);
     margin-top: 2px;
 }
 
+/* Schedule Items within Card */
+.schedule-item {
+    margin-bottom: 12px;
+    padding: 8px;
+    background-color: var(--surface-hover);
+    /* Slight highlight for schedules */
+    border-radius: var(--radius-sm);
+}
+
+.schedule-item:last-child {
+    margin-bottom: 0;
+}
+
+.schedule-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+
+.icon-muted {
+    color: var(--text-tertiary);
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.port-name {
+    font-weight: 600;
+    color: var(--primary-color);
+    flex: 1;
+    min-width: 0;
+    /* Critical for flex items to shrink below content size if needed, but here we want wrap */
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: anywhere !important;
+    line-height: 1.4;
+    display: block;
+    /* Ensure block model for wrapping */
+}
+
+.schedule-row .label {
+    color: var(--text-secondary);
+}
+
+.schedule-row .value {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.schedule-remark {
+    font-size: 12px;
+    color: var(--warning-text);
+    background: var(--warning-bg);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: 6px;
+    display: inline-block;
+}
+
+/* Contact Details */
 .contact-details {
     display: flex;
     flex-direction: column;
@@ -230,41 +240,55 @@
 .contact-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     font-size: 13px;
-    color: #334155;
+    color: var(--text-secondary);
 }
 
 .contact-row svg {
-    color: #94a3b8;
+    color: var(--text-tertiary);
     flex-shrink: 0;
 }
 
 .contact-row a {
-    color: #2563eb;
+    color: var(--primary-color);
     text-decoration: none;
+    font-weight: 500;
 }
 
 .contact-row a:hover {
     text-decoration: underline;
 }
 
+/* Mail Body */
 .mail-detail-body {
-    padding: 20px;
-    background: #fafafa;
-    border-radius: 8px;
-    /* Removed fixed height constraints */
+    padding: var(--spacing-lg);
+    background: var(--bg-color);
+    border-radius: var(--radius-md);
     flex: 1;
     overflow-y: auto;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color);
 }
 
 .mail-detail-body pre {
     white-space: pre-wrap;
     word-wrap: break-word;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 13px;
+    font-family: var(--font-family);
+    /* Use system font instead of mono for better readability */
+    font-size: 14px;
     line-height: 1.6;
-    color: #333;
+    color: var(--text-primary);
     margin: 0;
+}
+
+/* Custom Scrollbar for inner areas */
+.mail-secondary-column::-webkit-scrollbar,
+.mail-detail-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mail-secondary-column::-webkit-scrollbar-thumb,
+.mail-detail-body::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 3px;
 }

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Modal from '../../common/Modal/Modal';
-import { Ship, Anchor, Phone, Mail, User, PhoneCall, MessageCircle, Linkedin, Trash } from 'lucide-react';
+import { Ship, Anchor, Phone, Mail, User, PhoneCall, MessageCircle, Trash } from 'lucide-react';
 import { cleanMail } from '../../../api/mailApi';
 import './MailDetailModal.css';
 
 /**
- * 邮件详情 Modal
+ * Mail Detail Modal
  */
 const MailDetailModal = ({ isOpen, onClose, mail }) => {
     const [cleaning, setCleaning] = useState(false);
@@ -21,7 +21,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
         try {
             await cleanMail(mail.id);
             onClose();
-            alert('Extracted information cleared successfully.');
+            // Optional: trigger a refresh in parent if needed, or rely on next open
         } catch (error) {
             console.error('Failed to clear mail info', error);
             alert('Failed to clear extracted information.');
@@ -42,15 +42,15 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                     <div className="mail-primary-column">
                         <div className="mail-meta-list">
                             <div className="mail-meta-item">
-                                <span className="mail-meta-label">发件人：</span>
+                                <span className="mail-meta-label">Sender:</span>
                                 <span className="mail-meta-value">{mail.sender}</span>
                             </div>
                             <div className="mail-meta-item">
-                                <span className="mail-meta-label">收件人：</span>
-                                <span className="mail-meta-value">{mail.toEmail || '我'}</span>
+                                <span className="mail-meta-label">To:</span>
+                                <span className="mail-meta-value">{mail.toEmail || 'Me'}</span>
                             </div>
                             <div className="mail-meta-item">
-                                <span className="mail-meta-label">时　间：</span>
+                                <span className="mail-meta-label">Date:</span>
                                 <span className="mail-meta-value">{mail.date}</span>
                             </div>
                         </div>
@@ -63,27 +63,22 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                     {/* Right Column: Extracted Information */}
                     {(mail.extractedShipsInfo?.length > 0 || mail.extractedContactsInfo?.length > 0) && (
                         <div className="mail-secondary-column">
-                            <div className="mail-extracted-actions" style={{ marginBottom: '10px', textAlign: 'right' }}>
+                            <div className="mail-extracted-actions" style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 <button
-                                    className="btn-text-danger"
+                                    className="btn-secondary"
                                     onClick={handleClean}
                                     disabled={cleaning}
                                     style={{
-                                        color: '#ff4d4f',
-                                        border: '1px solid #ff4d4f',
-                                        background: 'none',
-                                        cursor: 'pointer',
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '4px',
+                                        color: 'var(--error-text)',
+                                        borderColor: 'var(--error-bg)',
+                                        background: 'transparent',
                                         fontSize: '12px',
-                                        padding: '4px 8px',
-                                        borderRadius: '4px',
-                                        marginLeft: 'auto'
+                                        padding: '4px 10px',
+                                        height: 'auto'
                                     }}
                                 >
                                     <Trash size={14} />
-                                    {cleaning ? 'Clearing...' : 'Clear Extracted Info'}
+                                    {cleaning ? 'Clearing...' : 'Clear Info'}
                                 </button>
                             </div>
 
@@ -93,7 +88,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                     <div className="extracted-group">
                                         <h3 className="extracted-title">
                                             <Ship size={18} />
-                                            识别到的船期信息
+                                            Extracted Ships
                                         </h3>
                                         <div className="ships-grid">
                                             {mail.extractedShipsInfo.map((ship, index) => (
@@ -130,7 +125,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                     <div className="extracted-group">
                                         <h3 className="extracted-title">
                                             <User size={18} />
-                                            识别到的联系人
+                                            Extracted Contacts
                                         </h3>
                                         <div className="contacts-grid">
                                             {mail.extractedContactsInfo.map((contact, index) => (
