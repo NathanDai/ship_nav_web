@@ -13,10 +13,10 @@ const ShipInfoModal = ({ isOpen, onClose, ships, onViewDetails }) => {
                 <div className="mail-detail-container">
                     <h3 className="ship-info-title">
                         <Info size={20} />
-                        Extracted Ships
+                        提取的船舶
                     </h3>
                     <div className="empty-state">
-                        <p>No ship information extracted.</p>
+                        <p>未提取到船舶信息。</p>
                     </div>
                 </div>
             </Modal>
@@ -28,7 +28,7 @@ const ShipInfoModal = ({ isOpen, onClose, ships, onViewDetails }) => {
             <div className="mail-detail-container">
                 <h3 className="ship-info-title">
                     <Info size={20} />
-                    Extracted Ships
+                    提取的船舶
                 </h3>
                 <div className="ship-list">
                     {ships.map((ship, index) => (
@@ -36,11 +36,11 @@ const ShipInfoModal = ({ isOpen, onClose, ships, onViewDetails }) => {
                             <div className="ship-header">
                                 <div className="ship-header-info">
                                     <div>
-                                        <span className="ship-info-label">Vessel:</span>
+                                        <span className="ship-info-label">船名：</span>
                                         <strong>{ship.vessel_name}</strong>
                                     </div>
                                     <div>
-                                        <span className="ship-info-label">IMO:</span>
+                                        <span className="ship-info-label">IMO：</span>
                                         {ship.imo}
                                     </div>
                                 </div>
@@ -51,20 +51,20 @@ const ShipInfoModal = ({ isOpen, onClose, ships, onViewDetails }) => {
                                             e.stopPropagation();
                                             onViewDetails(ship.imo);
                                         }}
-                                        title="View detailed ship info"
+                                        title="查看详细船舶信息"
                                     >
-                                        View Details
+                                        查看详情
                                     </button>
                                 )}
                             </div>
                             <div className="ship-schedule">
-                                <h4 className="ship-schedule-title">Schedule</h4>
+                                <h4 className="ship-schedule-title">船期</h4>
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Port</th>
-                                            <th>Laycan</th>
-                                            <th>Remark</th>
+                                            <th>港口</th>
+                                            <th>受载期</th>
+                                            <th>备注</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -115,7 +115,7 @@ export const ShipDetailModal = ({ isOpen, onClose, shipDetail }) => {
                                 />
                             ) : (
                                 <div className="no-image-placeholder">
-                                    <span>No Image Available</span>
+                                    <span>暂无图片</span>
                                 </div>
                             )}
                         </div>
@@ -129,7 +129,7 @@ export const ShipDetailModal = ({ isOpen, onClose, shipDetail }) => {
                                             <Anchor size={18} />
                                         </div>
                                         <div className="port-details">
-                                            <span className="port-label">Last Port (ATD)</span>
+                                            <span className="port-label">上一港 (ATD)</span>
                                             <span className="port-name" title={shipDetail.last_port || '-'}>{shipDetail.last_port || '-'}</span>
                                             <div className="port-time">
                                                 <Calendar size={12} style={{ marginRight: 4 }} />
@@ -147,7 +147,7 @@ export const ShipDetailModal = ({ isOpen, onClose, shipDetail }) => {
                                             <MapPin size={18} />
                                         </div>
                                         <div className="port-details">
-                                            <span className="port-label">Destination (ETA)</span>
+                                            <span className="port-label">目的地 (ETA)</span>
                                             <span className="port-name" title={shipDetail.destination || '-'}>{shipDetail.destination || '-'}</span>
                                             <div className="port-time">
                                                 <Calendar size={12} style={{ marginRight: 4 }} />
@@ -163,16 +163,16 @@ export const ShipDetailModal = ({ isOpen, onClose, shipDetail }) => {
                     {/* Right Column: Key Details */}
                     <div className="right-column">
                         <div className="ship-info-grid">
-                            {shipDetail.imo_number && <InfoItem label="IMO Number" value={shipDetail.imo_number} />}
+                            {shipDetail.imo_number && <InfoItem label="IMO" value={shipDetail.imo_number} />}
                             {shipDetail.mmsi && <InfoItem label="MMSI" value={shipDetail.mmsi} />}
-                            {shipDetail.callsign && <InfoItem label="Call Sign" value={shipDetail.callsign} />}
-                            {shipDetail.vessel_type && <InfoItem label="Vessel Type" value={shipDetail.vessel_type} />}
-                            {shipDetail.year_of_build && <InfoItem label="Year Built" value={shipDetail.year_of_build} />}
-                            {shipDetail.flag && <InfoItem label="Flag" value={shipDetail.flag} />}
-                            {shipDetail.length_overall_m && <InfoItem label="Length Overall" value={`${shipDetail.length_overall_m} m`} />}
-                            {shipDetail.beam_m && <InfoItem label="Beam" value={`${shipDetail.beam_m} m`} />}
-                            {shipDetail.gross_tonnage && <InfoItem label="Gross Tonnage" value={shipDetail.gross_tonnage} />}
-                            {shipDetail.deadweight && <InfoItem label="Deadweight" value={`${shipDetail.deadweight} t`} />}
+                            {shipDetail.callsign && <InfoItem label="呼号" value={shipDetail.callsign} />}
+                            {shipDetail.vessel_type && <InfoItem label="船舶类型" value={shipDetail.vessel_type} />}
+                            {shipDetail.year_of_build && <InfoItem label="建造年份" value={shipDetail.year_of_build} />}
+                            {shipDetail.flag && <InfoItem label="船旗" value={shipDetail.flag} />}
+                            {shipDetail.length_overall_m && <InfoItem label="全长" value={`${shipDetail.length_overall_m} m`} />}
+                            {shipDetail.beam_m && <InfoItem label="型宽" value={`${shipDetail.beam_m} m`} />}
+                            {shipDetail.gross_tonnage && <InfoItem label="总吨位" value={shipDetail.gross_tonnage} />}
+                            {shipDetail.deadweight && <InfoItem label="载重吨" value={`${shipDetail.deadweight} t`} />}
                         </div>
                     </div>
                 </div>
@@ -187,7 +187,7 @@ export const ShipDetailModal = ({ isOpen, onClose, shipDetail }) => {
                             className="btn-primary"
                             style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
                         >
-                            View on VesselFinder <Eye size={16} />
+                            在 VesselFinder 上查看 <Eye size={16} />
                         </a>
                     )}
                 </div>

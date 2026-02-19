@@ -27,7 +27,7 @@ const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) 
                                 <div
                                     className="link-text"
                                     onClick={() => onViewShipDetails(item.imo)}
-                                    title="Click to view ship details"
+                                    title="点击查看船舶详情"
                                 >
                                     {item.imo}
                                 </div>
@@ -61,7 +61,7 @@ const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) 
                                 className="btn-ghost btn-sm"
                                 onClick={() => onViewMailDetails(item.mail_id)}
                             >
-                                Details
+                                详情
                             </button>
                         </td>
                     )}
@@ -101,7 +101,7 @@ const ShipSchedule = () => {
         if (result.success) {
             shipDetailModal.openModal(result.data);
         } else {
-            showToast('Failed to get ship details', 'error');
+            showToast('获取船舶详情失败', 'error');
         }
     };
 
@@ -110,8 +110,8 @@ const ShipSchedule = () => {
             const data = await getMailDetail(mailId);
             mailDetailModal.openModal(data);
         } catch (err) {
-            console.error('Failed to load mail details', err);
-            showToast('Failed to load mail details', 'error');
+            console.error('加载邮件详情失败', err);
+            showToast('加载邮件详情失败', 'error');
         }
     };
 
@@ -125,14 +125,14 @@ const ShipSchedule = () => {
         <div className="ship-schedule-container">
             <div className="table-header">
                 <div className="header-title">
-                    <h2>Ship Schedule</h2>
-                    <span className="mail-count">Total {total} items</span>
+                    <h2>船舶排期</h2>
+                    <span className="mail-count">共 {total} 条</span>
                 </div>
                 <div className="table-controls">
                     <div className="search-wrapper">
                         <input
                             type="text"
-                            placeholder="Vessel Name"
+                            placeholder="船名"
                             className="search-input"
                             value={localVesselName}
                             onChange={(e) => setLocalVesselName(e.target.value)}
@@ -142,7 +142,7 @@ const ShipSchedule = () => {
                     <div className="search-wrapper">
                         <input
                             type="text"
-                            placeholder="IMO Number"
+                            placeholder="IMO"
                             className="search-input"
                             value={localImo}
                             onChange={(e) => setLocalImo(e.target.value)}
@@ -151,7 +151,7 @@ const ShipSchedule = () => {
                     </div>
                     <button className="btn-primary" onClick={handleLocalSearch}>
                         <Search size={16} />
-                        Search
+                        搜索
                     </button>
                 </div>
             </div>
@@ -160,23 +160,23 @@ const ShipSchedule = () => {
                 {error ? (
                     <div className="error-state">
                         <AlertCircle size={48} className="error-icon" />
-                        <h3>Something went wrong</h3>
+                        <h3>出错了</h3>
                         <p>{error}</p>
                     </div>
                 ) : (
                     <table>
                         <thead>
                             <tr>
-                                <th style={{ width: '150px' }}>Vessel</th>
+                                <th style={{ width: '150px' }}>船名</th>
                                 <th style={{ width: '100px' }}>IMO</th>
-                                <th style={{ width: '100px' }}>Type</th>
+                                <th style={{ width: '100px' }}>类型</th>
                                 <th style={{ width: '90px' }}>DWT</th>
-                                <th style={{ width: '80px' }}>Built</th>
-                                <th style={{ width: '140px' }}>Date</th>
-                                <th style={{ width: '180px' }}>Port</th>
-                                <th style={{ width: '250px' }}>Open</th>
-                                <th>Remark</th>
-                                <th style={{ width: '100px' }}>Action</th>
+                                <th style={{ width: '80px' }}>建造年份</th>
+                                <th style={{ width: '140px' }}>日期</th>
+                                <th style={{ width: '180px' }}>港口</th>
+                                <th style={{ width: '250px' }}>空船时间</th>
+                                <th>备注</th>
+                                <th style={{ width: '100px' }}>操作</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -193,7 +193,7 @@ const ShipSchedule = () => {
                                     <td colSpan="10" className="empty-state">
                                         <div className="empty-content">
                                             <Ship size={48} />
-                                            <p>No schedules found</p>
+                                            <p>未找到船期</p>
                                         </div>
                                     </td>
                                 </tr>

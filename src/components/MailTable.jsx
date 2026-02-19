@@ -44,9 +44,9 @@ const MailTable = () => {
     const handleRefresh = async () => {
         const result = await refreshMails();
         if (result.success) {
-            showToast('Emails updated successfully', 'success');
+            showToast('邮件更新成功', 'success');
         } else {
-            showToast('Failed to update emails', 'error');
+            showToast('邮件更新失败', 'error');
         }
     };
 
@@ -58,15 +58,15 @@ const MailTable = () => {
             .map(mail => mail.id);
 
         if (idsToProcess.length === 0) {
-            showToast('No emails available for schedule extraction (Status must be 0)', 'info');
+            showToast('没有可用的邮件进行船期提取 (状态必须为 0)', 'info');
             return;
         }
 
         const result = await fetchSchedule(idsToProcess);
         if (result.success) {
-            showToast(`Schedule extraction started for ${idsToProcess.length} emails`, 'success');
+            showToast(`已开始提取 ${idsToProcess.length} 封邮件的船期`, 'success');
         } else {
-            showToast('Failed to start schedule extraction', 'error');
+            showToast('船期提取启动失败', 'error');
         }
     };
 
@@ -78,15 +78,15 @@ const MailTable = () => {
             .map(mail => mail.id);
 
         if (idsToProcess.length === 0) {
-            showToast('No emails available for contact extraction (Status must be 0)', 'info');
+            showToast('没有可用的邮件进行联系人提取 (状态必须为 0)', 'info');
             return;
         }
 
         const result = await fetchContact(idsToProcess);
         if (result.success) {
-            showToast(`Contact extraction started for ${idsToProcess.length} emails`, 'success');
+            showToast(`已开始提取 ${idsToProcess.length} 封邮件的联系人`, 'success');
         } else {
-            showToast('Failed to start contact extraction', 'error');
+            showToast('联系人提取启动失败', 'error');
         }
     };
 
@@ -96,7 +96,7 @@ const MailTable = () => {
         if (result.success) {
             shipDetailModal.openModal(result.data);
         } else {
-            showToast('Failed to get ship details', 'error');
+            showToast('获取船舶详情失败', 'error');
         }
     };
 
@@ -106,8 +106,8 @@ const MailTable = () => {
             const data = await getMailDetail(mailId);
             mailDetailModal.openModal(data);
         } catch (err) {
-            console.error('Failed to load mail details', err);
-            showToast('Failed to load mail details', 'error');
+            console.error('加载邮件详情失败', err);
+            showToast('加载邮件详情失败', 'error');
         }
     };
 
@@ -133,7 +133,7 @@ const MailTable = () => {
                     <div className="search-wrapper">
                         <input
                             type="text"
-                            placeholder="Search emails..."
+                            placeholder="搜索邮件主题..."
                             className="search-input"
                             value={subject}
                             onChange={(e) => setSubject(e.target.value)}
@@ -141,10 +141,10 @@ const MailTable = () => {
                     </div>
                     <button className="btn-secondary" onClick={handleRefresh}>
                         <RotateCcw size={16} />
-                        Refresh
+                        刷新
                     </button>
                     <button className="btn-primary" onClick={searchMails}>
-                        Search
+                        搜索
                     </button>
                 </div>
             </div>
@@ -154,10 +154,10 @@ const MailTable = () => {
                 {error ? (
                     <div className="error-state">
                         <AlertCircle size={48} className="error-icon" />
-                        <h3>Something went wrong</h3>
+                        <h3>出错了</h3>
                         <p>{error}</p>
                         <button className="btn-secondary" onClick={() => window.location.reload()}>
-                            Reload Page
+                            刷新页面
                         </button>
                     </div>
                 ) : (
@@ -172,9 +172,9 @@ const MailTable = () => {
                                     />
                                 </th>
                                 <th className="th-star"></th>
-                                <th className="th-subject">主题</th>
+                                <th className="th-subject">邮件主题</th>
                                 <th className="th-sender">发件人</th>
-                                <th className="th-date">日期</th>
+                                <th className="th-date">邮件日期</th>
                                 <th className="th-status">状态</th>
                                 <th className="th-action"></th>
                             </tr>
@@ -193,7 +193,7 @@ const MailTable = () => {
                                     <td colSpan="7" className="empty-state">
                                         <div className="empty-content">
                                             <Mail size={48} />
-                                            <p>No emails found</p>
+                                            <p>未找到邮件</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -215,7 +215,7 @@ const MailTable = () => {
                                                         e.stopPropagation();
                                                         shipInfoModal.openModal(mail.extractedShipsInfo || []);
                                                     }}
-                                                    title="View Ship Info"
+                                                    title="查看船舶信息"
                                                 >
                                                     <Ship size={16} className="text-blue-500" />
                                                 </button>
@@ -227,7 +227,7 @@ const MailTable = () => {
                                                         e.stopPropagation();
                                                         contactInfoModal.openModal(mail.extractedContactsInfo || []);
                                                     }}
-                                                    title="View Contact Info"
+                                                    title="查看联系人信息"
                                                 >
                                                     <Users size={16} className="text-green-500" />
                                                 </button>
@@ -250,7 +250,7 @@ const MailTable = () => {
                                                     e.stopPropagation();
                                                     handleViewMailDetails(mail.id);
                                                 }}
-                                                title="View Details"
+                                                title="查看详情"
                                             >
                                                 <MoreVertical size={18} />
                                             </button>

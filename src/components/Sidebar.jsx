@@ -26,7 +26,7 @@ const Sidebar = () => {
           <p className="nav-header">菜单</p>
           <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <LayoutDashboard size={20} />
-            <span>Dashboard</span>
+            <span>仪表盘</span>
           </NavLink>
           <NavLink to="/mails" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Mail size={20} />
@@ -38,28 +38,28 @@ const Sidebar = () => {
           </NavLink>
           <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <Users size={20} />
-            <span>Customers</span>
+            <span>客户管理</span>
           </NavLink>
           <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <BarChart2 size={20} />
-            <span>Analytics</span>
+            <span>数据分析</span>
           </NavLink>
         </div>
 
         <div className="nav-group bottom-group">
           <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <Settings size={20} />
-            <span>Settings</span>
+            <span>系统设置</span>
           </NavLink>
           <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <HelpCircle size={20} />
-            <span>Help & Support</span>
+            <span>帮助与支持</span>
           </NavLink>
 
           <div className="nav-item darkmode-toggle">
             <div className="toggle-label">
               <Moon size={20} />
-              <span>Darkmode</span>
+              <span>深色模式</span>
             </div>
             <div className="toggle-switch"></div>
           </div>
@@ -70,11 +70,11 @@ const Sidebar = () => {
         <div className="user-info">
           <a href="#" className="nav-item logout">
             <LogOut size={20} />
-            <span>Log Out</span>
+            <span>退出登录</span>
           </a>
         </div>
         <div className="version-info">
-          v1.2.0 • Terms
+          v1.2.0 • 条款
         </div>
       </div>
     </aside>

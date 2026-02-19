@@ -13,7 +13,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
     if (!mail) return null;
 
     const handleClean = async () => {
-        if (!window.confirm('Are you sure you want to clear the extracted information?')) {
+        if (!window.confirm('您确定要清除提取的信息吗？')) {
             return;
         }
 
@@ -24,7 +24,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
             // Optional: trigger a refresh in parent if needed, or rely on next open
         } catch (error) {
             console.error('Failed to clear mail info', error);
-            alert('Failed to clear extracted information.');
+            alert('清除提取信息失败。');
         } finally {
             setCleaning(false);
         }
@@ -42,15 +42,15 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                     <div className="mail-primary-column">
                         <div className="mail-meta-list">
                             <div className="mail-meta-item">
-                                <span className="mail-meta-label">Sender:</span>
+                                <span className="mail-meta-label">发件人：</span>
                                 <span className="mail-meta-value">{mail.sender}</span>
                             </div>
                             <div className="mail-meta-item">
-                                <span className="mail-meta-label">To:</span>
-                                <span className="mail-meta-value">{mail.toEmail || 'Me'}</span>
+                                <span className="mail-meta-label">收件人：</span>
+                                <span className="mail-meta-value">{mail.toEmail || '我'}</span>
                             </div>
                             <div className="mail-meta-item">
-                                <span className="mail-meta-label">Date:</span>
+                                <span className="mail-meta-label">日期：</span>
                                 <span className="mail-meta-value">{mail.date}</span>
                             </div>
                         </div>
@@ -78,7 +78,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                     }}
                                 >
                                     <Trash size={14} />
-                                    {cleaning ? 'Clearing...' : 'Clear Info'}
+                                    {cleaning ? '清除中...' : '清除信息'}
                                 </button>
                             </div>
 
@@ -88,7 +88,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                     <div className="extracted-group">
                                         <h3 className="extracted-title">
                                             <Ship size={18} />
-                                            Extracted Ships
+                                            提取的船舶信息
                                         </h3>
                                         <div className="ships-grid">
                                             {mail.extractedShipsInfo.map((ship, index) => (
@@ -105,7 +105,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                                                     <span className="port-name">{item.port}</span>
                                                                 </div>
                                                                 <div className="schedule-row">
-                                                                    <span className="label">Laycan:</span>
+                                                                    <span className="label">受载期：</span>
                                                                     <span className="value">{item.laycan}</span>
                                                                 </div>
                                                                 {item.remark && (
@@ -125,7 +125,7 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                     <div className="extracted-group">
                                         <h3 className="extracted-title">
                                             <User size={18} />
-                                            Extracted Contacts
+                                            提取的联系信息
                                         </h3>
                                         <div className="contacts-grid">
                                             {mail.extractedContactsInfo.map((contact, index) => (
