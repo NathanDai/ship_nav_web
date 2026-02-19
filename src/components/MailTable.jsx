@@ -2,6 +2,7 @@ import React from 'react';
 import { MoreVertical, Ship, AlertCircle, Mail, RotateCcw, CalendarClock, Users } from 'lucide-react';
 import { useMails, useSelection, useToast, useModal, useShipDetails } from '../hooks';
 import { isMailSelectable } from '../constants/mailStatus';
+import { getMailDetail } from '../api/mailApi';
 import Badge from './common/Badge/Badge';
 import QueueStatus from './common/QueueStatus/QueueStatus';
 import MailDetailModal from './mail/MailDetailModal/MailDetailModal';
@@ -94,6 +95,17 @@ const MailTable = () => {
             shipDetailModal.openModal(result.data);
         } else {
             showToast('Failed to get ship details', 'error');
+        }
+    };
+
+    // 处理查看邮件详情
+    const handleViewMailDetails = async (mailId) => {
+        try {
+            const data = await getMailDetail(mailId);
+            mailDetailModal.openModal(data);
+        } catch (err) {
+            console.error('Failed to load mail details', err);
+            showToast('Failed to load mail details', 'error');
         }
     };
 
@@ -232,7 +244,10 @@ const MailTable = () => {
                                         <td className="td-action">
                                             <button
                                                 className="action-btn"
-                                                onClick={() => mailDetailModal.openModal(mail)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleViewMailDetails(mail.id);
+                                                }}
                                                 title="View Details"
                                             >
                                                 <MoreVertical size={18} />
