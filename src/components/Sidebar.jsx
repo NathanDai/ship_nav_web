@@ -2,8 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
-  Package,
-  ShoppingCart,
+  Mail,
+  Calendar,
   Users,
   BarChart2,
   Settings,
@@ -24,34 +24,34 @@ const Sidebar = () => {
       <nav className="nav-menu">
         <div className="nav-group">
           <p className="nav-header">菜单</p>
-          <NavLink to="/dashboard" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <LayoutDashboard size={20} />
             <span>Dashboard</span>
           </NavLink>
           <NavLink to="/mails" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <Package size={20} />
+            <Mail size={20} />
             <span>邮件列表</span>
           </NavLink>
           <NavLink to="/schedule" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-            <ShoppingCart size={20} />
+            <Calendar size={20} />
             <span>船舶排期</span>
           </NavLink>
-          <NavLink to="/customers" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <Users size={20} />
             <span>Customers</span>
           </NavLink>
-          <NavLink to="/analytics" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <BarChart2 size={20} />
             <span>Analytics</span>
           </NavLink>
         </div>
 
         <div className="nav-group bottom-group">
-          <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <Settings size={20} />
             <span>Settings</span>
           </NavLink>
-          <NavLink to="/help" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+          <NavLink to="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <HelpCircle size={20} />
             <span>Help & Support</span>
           </NavLink>

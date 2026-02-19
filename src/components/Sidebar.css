@@ -18,19 +18,21 @@
 .logo-icon {
     width: 32px;
     height: 32px;
-    background-color: var(--text-primary);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
     color: white;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
 }
 
 .logo-text {
     font-size: 20px;
     font-weight: 700;
     color: var(--text-primary);
+    letter-spacing: -0.5px;
 }
 
 .nav-menu {
@@ -40,18 +42,20 @@
 }
 
 .nav-header {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 16px;
-    letter-spacing: 0.5px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+    padding-left: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px;
+    padding: 10px 12px;
     border-radius: 8px;
     color: var(--text-secondary);
     font-size: 14px;
@@ -61,13 +65,15 @@
 }
 
 .nav-item:hover {
-    background-color: var(--bg-color);
+    background-color: var(--surface-hover);
     color: var(--text-primary);
 }
 
 .nav-item.active {
-    background-color: var(--text-primary);
-    color: white;
+    background-color: #eff6ff;
+    /* Light blue tint similar to info-bg but distinct */
+    color: var(--primary-color);
+    font-weight: 600;
 }
 
 .bottom-group {
