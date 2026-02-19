@@ -84,7 +84,7 @@ const ShipSchedule = () => {
         setPage,
         setVesselName,
         setImo,
-        handleSearch
+        searchSchedules
     } = useShipSchedule();
 
     // Local state for search inputs
@@ -116,9 +116,7 @@ const ShipSchedule = () => {
     };
 
     const handleLocalSearch = () => {
-        setVesselName(localVesselName);
-        setImo(localImo);
-        handleSearch();
+        searchSchedules(localVesselName, localImo);
     };
 
     return (

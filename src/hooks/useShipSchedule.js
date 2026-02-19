@@ -40,14 +40,22 @@ export const useShipSchedule = (
         }
     }, [page, pageSize, vesselName, imo]); // 依赖项包括查询条件
 
-    // 执行查询 - 重置到第一页
-    const handleSearch = useCallback(() => {
-        setPage(1);
-        // 如果当前已经在第一页，需要强制触发更新
-        if (page === 1) {
-            fetchSchedules();
+    // 执行查询
+    const searchSchedules = useCallback((newVesselName, newImo) => {
+        if (newVesselName !== vesselName || newImo !== imo) {
+            setPage(PAGINATION.DEFAULT_PAGE);
+            setVesselName(newVesselName);
+            setImo(newImo);
+        } else {
+            // 如果查询条件没变，手动触发刷新
+            setQueryKey(prev => prev + 1);
         }
-    }, [page, fetchSchedules]);
+    }, [vesselName, imo]);
+
+    // ensure fetchSchedules is triggered by queryKey as well
+    // Modify fetchSchedules dependency?
+    // fetchSchedules is dependent on page, pageSize, vesselName, imo.
+    // We can add queryKey to useEffect dependency.
 
     // 自动获取数据
     useEffect(() => {
@@ -66,7 +74,7 @@ export const useShipSchedule = (
         return () => {
             ignore = true;
         };
-    }, [fetchSchedules]);
+    }, [fetchSchedules, queryKey]);
 
     return {
         schedules,
@@ -80,6 +88,7 @@ export const useShipSchedule = (
         setPage,
         setVesselName,
         setImo,
-        handleSearch
+        setImo,
+        searchSchedules
     };
 };

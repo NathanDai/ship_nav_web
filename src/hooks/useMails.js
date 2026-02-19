@@ -58,10 +58,12 @@ export const useMails = (
 
     // 搜索邮件
     const searchMails = useCallback(() => {
-        setPage(PAGINATION.DEFAULT_PAGE);
+        if (subject !== querySubject) {
+            setPage(PAGINATION.DEFAULT_PAGE);
+        }
         setQuerySubject(subject);
         setSearchTrigger(prev => prev + 1);
-    }, [subject]);
+    }, [subject, querySubject]);
 
     // 获取船期
     const fetchSchedule = useCallback(async (ids) => {
