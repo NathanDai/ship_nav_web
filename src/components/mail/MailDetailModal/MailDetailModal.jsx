@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '../../common/Modal/Modal';
-import { Ship, Anchor, Phone, Mail, User, PhoneCall, MessageCircle, Trash } from 'lucide-react';
+import { Ship, Anchor, Phone, Mail, User, PhoneCall, MessageCircle, Trash, Linkedin, Users } from 'lucide-react';
 import { cleanMail } from '../../../api/mailApi';
 import './MailDetailModal.css';
 
@@ -100,14 +100,35 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                                     <div className="ship-schedules">
                                                         {ship.schedule?.map((item, idx) => (
                                                             <div key={idx} className="schedule-item">
-                                                                <div className="schedule-row">
-                                                                    <Anchor size={14} className="icon-muted" />
-                                                                    <span className="port-name">{item.port}</span>
-                                                                </div>
-                                                                <div className="schedule-row">
-                                                                    <span className="label">受载期：</span>
-                                                                    <span className="value">{item.laycan}</span>
-                                                                </div>
+                                                                {/* Helper to render a schedule row */}
+                                                                {(item.open_port || item.open_region || item.open_laycan) && (
+                                                                    <div className="schedule-row-group">
+                                                                        <div className="schedule-row">
+                                                                            <Anchor size={14} className="icon-muted" />
+                                                                            <span className="label">OPEN 位置：</span>
+                                                                            <span className="port-name">{item.open_port || item.open_region || '-'}</span>
+                                                                        </div>
+                                                                        <div className="schedule-row">
+                                                                            <span className="label">OPEN 日期：</span>
+                                                                            <span className="value">{item.open_laycan || '-'}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+
+                                                                {(item.eta_port || item.eta_region || item.eta_laycan) && (
+                                                                    <div className="schedule-row-group" style={{ marginTop: (item.open_port || item.open_laycan) ? '4px' : '0' }}>
+                                                                        <div className="schedule-row">
+                                                                            <Anchor size={14} className="icon-muted" />
+                                                                            <span className="label">ETA 位置：</span>
+                                                                            <span className="port-name">{item.eta_port || item.eta_region || '-'}</span>
+                                                                        </div>
+                                                                        <div className="schedule-row">
+                                                                            <span className="label">ETA 日期：</span>
+                                                                            <span className="value">{item.eta_laycan || '-'}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+
                                                                 {item.remark && (
                                                                     <div className="schedule-remark">{item.remark}</div>
                                                                 )}
@@ -157,6 +178,18 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                                             <div className="contact-row">
                                                                 <PhoneCall size={14} />
                                                                 <span>WhatsApp: {contact.whatsapp}</span>
+                                                            </div>
+                                                        )}
+                                                        {contact.teams && (
+                                                            <div className="contact-row">
+                                                                <Users size={14} />
+                                                                <a href={contact.teams} target="_blank" rel="noopener noreferrer">Teams Link</a>
+                                                            </div>
+                                                        )}
+                                                        {contact.linkedin && (
+                                                            <div className="contact-row">
+                                                                <Linkedin size={14} />
+                                                                <a href={contact.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn Profile</a>
                                                             </div>
                                                         )}
                                                     </div>

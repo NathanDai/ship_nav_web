@@ -47,10 +47,16 @@ const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) 
                         </>
                     )}
                     <td className="schedule-cell-content">
-                        {scheduleItem ? scheduleItem.port : '-'}
+                        {scheduleItem ? (scheduleItem.open_laycan || '-') : '-'}
                     </td>
                     <td className="schedule-cell-content">
-                        {scheduleItem ? scheduleItem.laycan : '-'}
+                        {scheduleItem ? (scheduleItem.open_port || scheduleItem.open_region || '-') : '-'}
+                    </td>
+                    <td className="schedule-cell-content">
+                        {scheduleItem ? (scheduleItem.eta_laycan || '-') : '-'}
+                    </td>
+                    <td className="schedule-cell-content">
+                        {scheduleItem ? (scheduleItem.eta_port || scheduleItem.eta_region || '-') : '-'}
                     </td>
                     <td className="schedule-cell-content">
                         {scheduleItem ? (scheduleItem.remark || '-') : '-'}
@@ -171,8 +177,10 @@ const ShipSchedule = () => {
                                 <th style={{ width: '90px' }}>DWT</th>
                                 <th style={{ width: '80px' }}>建造年份</th>
                                 <th style={{ width: '140px' }}>日期</th>
-                                <th style={{ width: '180px' }}>港口</th>
-                                <th style={{ width: '250px' }}>空船时间</th>
+                                <th style={{ width: '120px' }}>Open日期</th>
+                                <th style={{ width: '120px' }}>Open位置</th>
+                                <th style={{ width: '120px' }}>ETA日期</th>
+                                <th style={{ width: '120px' }}>ETA位置</th>
                                 <th>备注</th>
                                 <th style={{ width: '100px' }}>操作</th>
                             </tr>

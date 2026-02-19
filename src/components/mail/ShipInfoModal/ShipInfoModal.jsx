@@ -63,15 +63,19 @@ const ShipInfoModal = ({ isOpen, onClose, ships, onViewDetails }) => {
                                     <thead>
                                         <tr>
                                             <th>港口</th>
+                                            <th>ETA</th>
                                             <th>受载期</th>
+                                            <th>ETA日期</th>
                                             <th>备注</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {ship.schedule && ship.schedule.map((sch, idx) => (
                                             <tr key={idx}>
-                                                <td>{sch.port}</td>
-                                                <td>{sch.laycan}</td>
+                                                <td>{sch.open_port || sch.open_region || '-'}</td>
+                                                <td>{sch.eta_port || sch.eta_region || '-'}</td>
+                                                <td>{sch.open_laycan || '-'}</td>
+                                                <td>{sch.eta_laycan || '-'}</td>
                                                 <td>{sch.remark || '-'}</td>
                                             </tr>
                                         ))}
