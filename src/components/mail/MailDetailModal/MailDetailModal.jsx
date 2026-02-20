@@ -129,6 +129,15 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                                                     </div>
                                                                 )}
 
+                                                                {item.trade_intent && (
+                                                                    <div className="schedule-row-group" style={{ marginTop: '4px' }}>
+                                                                        <div className="schedule-row">
+                                                                            <span className="label" style={{ marginLeft: '18px' }}>航线意向：</span>
+                                                                            <span className="value">{item.trade_intent}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+
                                                                 {item.remark && (
                                                                     <div className="schedule-remark">{item.remark}</div>
                                                                 )}

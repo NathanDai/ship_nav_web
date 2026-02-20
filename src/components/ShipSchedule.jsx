@@ -59,6 +59,9 @@ const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) 
                         {scheduleItem ? (scheduleItem.eta_port || scheduleItem.eta_region || '-') : '-'}
                     </td>
                     <td className="schedule-cell-content">
+                        {scheduleItem ? (scheduleItem.trade_intent || '-') : '-'}
+                    </td>
+                    <td className="schedule-cell-content">
                         {scheduleItem ? (scheduleItem.remark || '-') : '-'}
                     </td>
                     {sIndex === 0 && (
@@ -181,6 +184,7 @@ const ShipSchedule = () => {
                                 <th style={{ width: '120px' }}>Open位置</th>
                                 <th style={{ width: '120px' }}>ETA日期</th>
                                 <th style={{ width: '120px' }}>ETA位置</th>
+                                <th style={{ width: '120px' }}>意向</th>
                                 <th>备注</th>
                                 <th style={{ width: '100px' }}>操作</th>
                             </tr>
@@ -189,14 +193,14 @@ const ShipSchedule = () => {
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>
-                                        <td colSpan="10" className="skeleton-cell">
+                                        <td colSpan="13" className="skeleton-cell">
                                             <div className="skeleton-line"></div>
                                         </td>
                                     </tr>
                                 ))
                             ) : schedules.length === 0 ? (
                                 <tr>
-                                    <td colSpan="10" className="empty-state">
+                                    <td colSpan="13" className="empty-state">
                                         <div className="empty-content">
                                             <Ship size={48} />
                                             <p>未找到船期</p>

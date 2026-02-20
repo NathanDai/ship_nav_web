@@ -66,6 +66,7 @@ const ShipInfoModal = ({ isOpen, onClose, ships, onViewDetails }) => {
                                             <th>ETA</th>
                                             <th>受载期</th>
                                             <th>ETA日期</th>
+                                            <th>航线意向</th>
                                             <th>备注</th>
                                         </tr>
                                     </thead>
@@ -76,6 +77,7 @@ const ShipInfoModal = ({ isOpen, onClose, ships, onViewDetails }) => {
                                                 <td>{sch.eta_port || sch.eta_region || '-'}</td>
                                                 <td>{sch.open_laycan || '-'}</td>
                                                 <td>{sch.eta_laycan || '-'}</td>
+                                                <td>{sch.trade_intent || '-'}</td>
                                                 <td>{sch.remark || '-'}</td>
                                             </tr>
                                         ))}
