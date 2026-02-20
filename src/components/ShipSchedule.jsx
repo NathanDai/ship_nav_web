@@ -13,6 +13,9 @@ import './ShipSchedule.css';
 
 const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) => {
     const scheduleList = item.schedule && item.schedule.length > 0 ? item.schedule : [null];
+    const currentYear = new Date().getFullYear();
+    const buildYear = parseInt(item.year_of_build, 10);
+    const age = !isNaN(buildYear) ? currentYear - buildYear : null;
 
     return (
         <React.Fragment>
@@ -39,7 +42,7 @@ const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) 
                                 {item.deadweight || '-'}
                             </td>
                             <td rowSpan={scheduleList.length} className="built-cell">
-                                {item.year_of_build || '-'}
+                                {item.year_of_build ? (age !== null ? `${item.year_of_build} (${age}年)` : item.year_of_build) : '-'}
                             </td>
                             <td rowSpan={scheduleList.length} className="date-cell">
                                 <div className="text-secondary">{item.time_date}</div>
@@ -176,15 +179,15 @@ const ShipSchedule = () => {
                             <tr>
                                 <th style={{ width: '150px' }}>船名</th>
                                 <th style={{ width: '100px' }}>IMO</th>
-                                <th style={{ width: '100px' }}>类型</th>
-                                <th style={{ width: '90px' }}>DWT</th>
-                                <th style={{ width: '80px' }}>建造年份</th>
-                                <th style={{ width: '140px' }}>日期</th>
+                                <th style={{ width: '100px' }}>船型</th>
+                                <th style={{ width: '90px' }}>载重吨</th>
+                                <th style={{ width: '110px' }}>建造年份(船龄)</th>
+                                <th style={{ width: '140px' }}>收件时间</th>
                                 <th style={{ width: '120px' }}>Open日期</th>
                                 <th style={{ width: '120px' }}>Open位置</th>
                                 <th style={{ width: '120px' }}>ETA日期</th>
                                 <th style={{ width: '120px' }}>ETA位置</th>
-                                <th style={{ width: '120px' }}>意向</th>
+                                <th style={{ width: '120px' }}>航线意向</th>
                                 <th>备注</th>
                                 <th style={{ width: '100px' }}>操作</th>
                             </tr>
