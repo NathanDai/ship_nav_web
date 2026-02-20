@@ -6,6 +6,8 @@
     display: flex;
     flex-direction: column;
     padding: 24px;
+    position: sticky;
+    top: 0;
 }
 
 .logo-container {
@@ -74,6 +76,16 @@
     /* Light blue tint similar to info-bg but distinct */
     color: var(--primary-color);
     font-weight: 600;
+}
+
+.nav-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.nav-item.disabled:hover {
+    background-color: transparent;
+    color: var(--text-secondary);
 }
 
 .bottom-group {
