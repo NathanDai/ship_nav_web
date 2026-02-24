@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import MailTable from './components/MailTable';
 import ShipSchedule from './components/ShipSchedule';
+import ShipPlan from './components/ShipPlan';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MailTable />} />
           <Route path="/schedule" element={<ShipSchedule />} />
+          <Route path="/ship-plan" element={<ShipPlan />} />
           <Route path="*" element={<MailTable />} />
         </Routes>
       </div>

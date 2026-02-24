@@ -36,10 +36,10 @@ const Sidebar = () => {
             <Calendar size={20} />
             <span>船舶排期</span>
           </NavLink>
-          <a href="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
+          <NavLink to="/ship-plan" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
             <Users size={20} />
-            <span>客户管理</span>
-          </a>
+            <span>船舶计划</span>
+          </NavLink>
           <a href="#" className="nav-item disabled" onClick={(e) => e.preventDefault()}>
             <BarChart2 size={20} />
             <span>数据分析</span>

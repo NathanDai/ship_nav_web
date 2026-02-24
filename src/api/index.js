@@ -3,4 +3,5 @@ export * from './mailApi';
 export * from './shipApi';
 export * from './scheduleApi';
 export * from './generalApi';
+export * from './planApi';
 

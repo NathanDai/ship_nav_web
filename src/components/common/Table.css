@@ -3,8 +3,8 @@
     background: var(--surface-color);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
-    overflow: hidden;
-    /* For rounded corners */
+    overflow-x: auto;
+    /* For rounded corners and scrolling */
     border: 1px solid var(--border-color);
 }
 

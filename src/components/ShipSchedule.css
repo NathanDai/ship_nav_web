@@ -81,6 +81,8 @@
 
 .type-cell,
 .dwt-cell,
+.length-cell,
+.beam-cell,
 .built-cell,
 .date-cell {
     vertical-align: top;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Ship, AlertCircle } from 'lucide-react';
-import { useShipSchedule } from '../hooks/useShipSchedule';
+import { useShipPlan } from '../hooks/useShipPlan';
 import { useModal, useShipDetails, useToast } from '../hooks';
 import Pagination from './Pagination';
 import ShipInfoModal, { ShipDetailModal } from './mail/ShipInfoModal/ShipInfoModal';
@@ -9,89 +9,78 @@ import { getMailDetail } from '../api/mailApi';
 import Toast from './Toast';
 import './common/Table.css';
 import './common/Button.css';
-import './ShipSchedule.css';
+import './ShipSchedule.css'; // Reusing the same CSS as ShipSchedule
 
-const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) => {
-    const scheduleList = item.schedule && item.schedule.length > 0 ? item.schedule : [null];
+const ShipPlanRow = ({ item, index, onViewShipDetails, onViewMailDetails }) => {
     const currentYear = new Date().getFullYear();
     const buildYear = parseInt(item.year_of_build, 10);
     const age = !isNaN(buildYear) ? currentYear - buildYear : null;
 
     return (
         <React.Fragment>
-            {scheduleList.map((scheduleItem, sIndex) => (
-                <tr key={`${index}-${sIndex}`} className={sIndex === 0 ? 'ship-row-start' : ''}>
-                    {sIndex === 0 && (
-                        <>
-                            <td rowSpan={scheduleList.length} className="vessel-cell">
-                                <div className="subject-text">{item.vessel_name}</div>
-                            </td>
-                            <td rowSpan={scheduleList.length} className="imo-cell">
-                                <div
-                                    className="link-text"
-                                    onClick={() => onViewShipDetails(item.imo)}
-                                    title="点击查看船舶详情"
-                                >
-                                    {item.imo}
-                                </div>
-                            </td>
-                            <td rowSpan={scheduleList.length} className="type-cell">
-                                {item.vessel_type || '-'}
-                            </td>
-                            <td rowSpan={scheduleList.length} className="dwt-cell">
-                                {item.deadweight || '-'}
-                            </td>
-                            <td rowSpan={scheduleList.length} className="length-cell">
-                                {item.length_overall_m || '-'}
-                            </td>
-                            <td rowSpan={scheduleList.length} className="beam-cell">
-                                {item.beam_m || '-'}
-                            </td>
-                            <td rowSpan={scheduleList.length} className="built-cell">
-                                {item.year_of_build ? (age !== null ? `${item.year_of_build} (${age}年)` : item.year_of_build) : '-'}
-                            </td>
-                            <td rowSpan={scheduleList.length} className="date-cell">
-                                <div className="text-secondary">{item.time_date}</div>
-                            </td>
-                        </>
-                    )}
-                    <td className="schedule-cell-content">
-                        {scheduleItem ? (scheduleItem.open_laycan || '-') : '-'}
-                    </td>
-                    <td className="schedule-cell-content">
-                        {scheduleItem ? (scheduleItem.open_port || scheduleItem.open_region || '-') : '-'}
-                    </td>
-                    <td className="schedule-cell-content">
-                        {scheduleItem ? (scheduleItem.eta_laycan || '-') : '-'}
-                    </td>
-                    <td className="schedule-cell-content">
-                        {scheduleItem ? (scheduleItem.eta_port || scheduleItem.eta_region || '-') : '-'}
-                    </td>
-                    <td className="schedule-cell-content">
-                        {scheduleItem ? (scheduleItem.trade_intent || '-') : '-'}
-                    </td>
-                    <td className="schedule-cell-content">
-                        {scheduleItem ? (scheduleItem.remark || '-') : '-'}
-                    </td>
-                    {sIndex === 0 && (
-                        <td rowSpan={scheduleList.length} className="action-cell">
-                            <button
-                                className="btn-ghost btn-sm"
-                                onClick={() => onViewMailDetails(item.mail_id)}
-                            >
-                                详情
-                            </button>
-                        </td>
-                    )}
-                </tr>
-            ))}
+            <tr key={`${index}`} className="ship-row-start">
+                <td className="vessel-cell">
+                    <div className="subject-text">{item.vessel_name || '-'}</div>
+                </td>
+                <td className="imo-cell">
+                    <div
+                        className="link-text"
+                        onClick={() => onViewShipDetails(item.imo)}
+                        title="点击查看船舶详情"
+                    >
+                        {item.imo || '-'}
+                    </div>
+                </td>
+                <td className="type-cell">
+                    {item.vessel_type || '-'}
+                </td>
+                <td className="dwt-cell">
+                    {item.deadweight || '-'}
+                </td>
+                <td className="length-cell">
+                    {item.length_overall_m || '-'}
+                </td>
+                <td className="beam-cell">
+                    {item.beam_m || '-'}
+                </td>
+                <td className="built-cell">
+                    {item.year_of_build ? (age !== null ? `${item.year_of_build} (${age}年)` : item.year_of_build) : '-'}
+                </td>
+                <td className="date-cell">
+                    <div className="text-secondary">{item.time_date || '-'}</div>
+                </td>
+
+                <td className="schedule-cell-content">
+                    {[item.open_laycan_start, item.open_laycan_end].filter(Boolean).join(' ~ ') || '-'}
+                </td>
+                <td className="schedule-cell-content">
+                    {item.open_port || item.open_region || '-'}
+                </td>
+                <td className="schedule-cell-content">
+                    {[item.eta_laycan_start, item.eta_laycan_end].filter(Boolean).join(' ~ ') || '-'}
+                </td>
+                <td className="schedule-cell-content">
+                    {item.eta_port || item.eta_region || '-'}
+                </td>
+                <td className="schedule-cell-content">
+                    {item.trade_intent || '-'}
+                </td>
+                <td className="action-cell">
+                    <button
+                        className="btn-ghost btn-sm"
+                        onClick={() => onViewMailDetails(item.mail_id)}
+                    >
+                        详情
+                    </button>
+                </td>
+            </tr>
         </React.Fragment>
     );
 };
 
-const ShipSchedule = () => {
+const ShipPlan = () => {
     const {
-        schedules,
+        plans,
         loading,
         error,
         page,
@@ -99,15 +88,21 @@ const ShipSchedule = () => {
         total,
         vesselName,
         imo,
+        openLaycan,
+        openPort,
         setPage,
         setVesselName,
         setImo,
-        searchSchedules
-    } = useShipSchedule();
+        setOpenLaycan,
+        setOpenPort,
+        searchPlans
+    } = useShipPlan();
 
     // Local state for search inputs
     const [localVesselName, setLocalVesselName] = useState(vesselName);
     const [localImo, setLocalImo] = useState(imo);
+    const [localOpenLaycan, setLocalOpenLaycan] = useState(openLaycan);
+    const [localOpenPort, setLocalOpenPort] = useState(openPort);
 
     const shipDetailModal = useModal();
     const mailDetailModal = useModal();
@@ -134,14 +129,14 @@ const ShipSchedule = () => {
     };
 
     const handleLocalSearch = () => {
-        searchSchedules(localVesselName, localImo);
+        searchPlans(localVesselName, localImo, localOpenLaycan, localOpenPort);
     };
 
     return (
         <div className="ship-schedule-container">
             <div className="table-header">
                 <div className="header-title">
-                    <h2>船舶排期</h2>
+                    <h2>船舶计划</h2>
                     <span className="mail-count">共 {total} 条</span>
                 </div>
                 <div className="table-controls">
@@ -162,6 +157,26 @@ const ShipSchedule = () => {
                             className="search-input"
                             value={localImo}
                             onChange={(e) => setLocalImo(e.target.value)}
+                            style={{ width: '180px' }}
+                        />
+                    </div>
+                    <div className="search-wrapper">
+                        <input
+                            type="date"
+                            className="search-input"
+                            value={localOpenLaycan}
+                            onChange={(e) => setLocalOpenLaycan(e.target.value)}
+                            style={{ width: '180px' }}
+                            title="Open日期"
+                        />
+                    </div>
+                    <div className="search-wrapper">
+                        <input
+                            type="text"
+                            placeholder="Open位置"
+                            className="search-input"
+                            value={localOpenPort}
+                            onChange={(e) => setLocalOpenPort(e.target.value)}
                             style={{ width: '180px' }}
                         />
                     </div>
@@ -196,7 +211,6 @@ const ShipSchedule = () => {
                                 <th style={{ minWidth: '120px' }}>ETA日期</th>
                                 <th style={{ minWidth: '120px' }}>ETA位置</th>
                                 <th style={{ minWidth: '120px' }}>航线意向</th>
-                                <th style={{ minWidth: '150px' }}>备注</th>
                                 <th style={{ minWidth: '100px' }}>操作</th>
                             </tr>
                         </thead>
@@ -204,23 +218,23 @@ const ShipSchedule = () => {
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>
-                                        <td colSpan="15" className="skeleton-cell">
+                                        <td colSpan="14" className="skeleton-cell">
                                             <div className="skeleton-line"></div>
                                         </td>
                                     </tr>
                                 ))
-                            ) : schedules.length === 0 ? (
+                            ) : plans.length === 0 ? (
                                 <tr>
-                                    <td colSpan="15" className="empty-state">
+                                    <td colSpan="14" className="empty-state">
                                         <div className="empty-content">
                                             <Ship size={48} />
-                                            <p>未找到船期</p>
+                                            <p>未找到船舶计划</p>
                                         </div>
                                     </td>
                                 </tr>
                             ) : (
-                                schedules.map((item, index) => (
-                                    <ShipScheduleRow
+                                plans.map((item, index) => (
+                                    <ShipPlanRow
                                         key={index}
                                         item={item}
                                         index={index}
@@ -265,4 +279,4 @@ const ShipSchedule = () => {
     );
 };
 
-export default ShipSchedule;
+export default ShipPlan;
