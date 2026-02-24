@@ -9,11 +9,11 @@ export const useShipDetails = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchShipDetails = useCallback(async (imo, isEta = false) => {
+    const fetchShipDetails = useCallback(async (imo) => {
         setLoading(true);
         setError(null);
         try {
-            const data = await getShipDetails(imo, isEta);
+            const data = await getShipDetails(imo);
             setLoading(false);
             return { success: true, data };
         } catch (err) {
