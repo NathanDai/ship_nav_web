@@ -21,12 +21,11 @@ const ShipPlanRow = ({ item, index, onViewShipDetails, onViewMailDetails }) => {
             <tr key={`${index}`} className="ship-row-start">
                 <td className="vessel-cell">
                     <div className="subject-text">{item.vessel_name || '-'}</div>
-                </td>
-                <td className="imo-cell">
                     <div
                         className="link-text"
                         onClick={() => onViewShipDetails(item.imo)}
                         title="点击查看船舶详情"
+                        style={{ marginTop: '4px', fontSize: '0.9em' }}
                     >
                         {item.imo || '-'}
                     </div>
@@ -198,8 +197,7 @@ const ShipPlan = () => {
                     <table>
                         <thead>
                             <tr>
-                                <th style={{ minWidth: '150px' }}>船名</th>
-                                <th style={{ minWidth: '100px' }}>IMO</th>
+                                <th style={{ minWidth: '150px' }}>船名/IMO</th>
                                 <th style={{ minWidth: '100px' }}>船型</th>
                                 <th style={{ minWidth: '120px' }}>载重吨(吨)</th>
                                 <th style={{ minWidth: '90px' }}>总长(m)</th>
@@ -218,14 +216,14 @@ const ShipPlan = () => {
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>
-                                        <td colSpan="14" className="skeleton-cell">
+                                        <td colSpan="13" className="skeleton-cell">
                                             <div className="skeleton-line"></div>
                                         </td>
                                     </tr>
                                 ))
                             ) : plans.length === 0 ? (
                                 <tr>
-                                    <td colSpan="14" className="empty-state">
+                                    <td colSpan="13" className="empty-state">
                                         <div className="empty-content">
                                             <Ship size={48} />
                                             <p>未找到船舶计划</p>

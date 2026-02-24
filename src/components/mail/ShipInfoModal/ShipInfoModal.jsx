@@ -115,9 +115,9 @@ export const ShipDetailModal = ({ isOpen, onClose, shipDetail }) => {
                         )}
                     </div>
                     <div className="sd-header-right">
-                        <button className="sd-icon-btn" title="分享"><Share2 size={20} /></button>
-                        <button className="sd-icon-btn" title="打印"><Printer size={20} /></button>
-                        <button className="sd-icon-btn" onClick={onClose} title="关闭"><X size={20} /></button>
+                        {/* <button className="sd-icon-btn" title="分享"><Share2 size={20} /></button> */}
+                        {/* <button className="sd-icon-btn" title="打印"><Printer size={20} /></button> */}
+                        {/* <button className="sd-icon-btn" onClick={onClose} title="关闭"><X size={20} /></button> */}
                     </div>
                 </div>
 

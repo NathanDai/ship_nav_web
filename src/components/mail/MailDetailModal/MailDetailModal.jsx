@@ -139,7 +139,17 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                                                 )}
 
                                                                 {item.remark && (
-                                                                    <div className="schedule-remark">{item.remark}</div>
+                                                                    <div className="schedule-remark-container">
+                                                                        {item.remark.split('|').map((part, pIdx) => {
+                                                                            const trimmed = part.trim();
+                                                                            if (!trimmed) return null;
+                                                                            return (
+                                                                                <span key={pIdx} className="schedule-remark-tag">
+                                                                                    {trimmed}
+                                                                                </span>
+                                                                            );
+                                                                        })}
+                                                                    </div>
                                                                 )}
                                                             </div>
                                                         ))}

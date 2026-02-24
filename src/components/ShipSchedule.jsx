@@ -25,12 +25,11 @@ const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) 
                         <>
                             <td rowSpan={scheduleList.length} className="vessel-cell">
                                 <div className="subject-text">{item.vessel_name}</div>
-                            </td>
-                            <td rowSpan={scheduleList.length} className="imo-cell">
                                 <div
                                     className="link-text"
                                     onClick={() => onViewShipDetails(item.imo)}
                                     title="点击查看船舶详情"
+                                    style={{ marginTop: '4px', fontSize: '0.9em' }}
                                 >
                                     {item.imo}
                                 </div>
@@ -69,9 +68,6 @@ const ShipScheduleRow = ({ item, index, onViewShipDetails, onViewMailDetails }) 
                     </td>
                     <td className="schedule-cell-content">
                         {scheduleItem ? (scheduleItem.trade_intent || '-') : '-'}
-                    </td>
-                    <td className="schedule-cell-content">
-                        {scheduleItem ? (scheduleItem.remark || '-') : '-'}
                     </td>
                     {sIndex === 0 && (
                         <td rowSpan={scheduleList.length} className="action-cell">
@@ -183,8 +179,7 @@ const ShipSchedule = () => {
                     <table>
                         <thead>
                             <tr>
-                                <th style={{ minWidth: '150px' }}>船名</th>
-                                <th style={{ minWidth: '100px' }}>IMO</th>
+                                <th style={{ minWidth: '150px' }}>船名/IMO</th>
                                 <th style={{ minWidth: '100px' }}>船型</th>
                                 <th style={{ minWidth: '120px' }}>载重吨(吨)</th>
                                 <th style={{ minWidth: '90px' }}>总长(m)</th>
@@ -196,7 +191,6 @@ const ShipSchedule = () => {
                                 <th style={{ minWidth: '120px' }}>ETA日期</th>
                                 <th style={{ minWidth: '120px' }}>ETA位置</th>
                                 <th style={{ minWidth: '120px' }}>航线意向</th>
-                                <th style={{ minWidth: '150px' }}>备注</th>
                                 <th style={{ minWidth: '100px' }}>操作</th>
                             </tr>
                         </thead>
@@ -204,14 +198,14 @@ const ShipSchedule = () => {
                             {loading ? (
                                 Array.from({ length: 5 }).map((_, i) => (
                                     <tr key={i}>
-                                        <td colSpan="15" className="skeleton-cell">
+                                        <td colSpan="13" className="skeleton-cell">
                                             <div className="skeleton-line"></div>
                                         </td>
                                     </tr>
                                 ))
                             ) : schedules.length === 0 ? (
                                 <tr>
-                                    <td colSpan="15" className="empty-state">
+                                    <td colSpan="13" className="empty-state">
                                         <div className="empty-content">
                                             <Ship size={48} />
                                             <p>未找到船期</p>

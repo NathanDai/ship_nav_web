@@ -129,7 +129,6 @@ const MailTable = () => {
                     <span className="mail-count">共 {total} 条</span>
                 </div>
                 <div className="table-controls">
-                    <QueueStatus />
                     <div className="search-wrapper">
                         <input
                             type="text"
@@ -150,7 +149,10 @@ const MailTable = () => {
             </div>
 
             {/* 表格 */}
-            <div className="table-wrapper">
+            <div className="table-wrapper table-with-queue">
+                <div className="queue-status-wrapper">
+                    <QueueStatus />
+                </div>
                 {error ? (
                     <div className="error-state">
                         <AlertCircle size={48} className="error-icon" />
