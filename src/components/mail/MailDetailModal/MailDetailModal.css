@@ -88,10 +88,9 @@
 
 /* Extracted Info Section */
 .mail-extracted-section {
-    padding: var(--spacing-md);
-    background-color: var(--bg-color);
+    padding: var(--spacing-sm) 0;
+    /* Removed background and border to match the clean design */
     border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
 }
 
 .extracted-group {
@@ -102,6 +101,15 @@
     margin-bottom: 0;
 }
 
+.extracted-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding: 0 4px;
+    /* Optional padding for alignment with cards underneath */
+}
+
 .extracted-title {
     display: flex;
     align-items: center;
@@ -109,9 +117,31 @@
     font-size: 15px;
     font-weight: 600;
     color: var(--text-primary);
-    margin-bottom: var(--spacing-md);
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-color);
+    margin: 0;
+}
+
+.btn-clear-extracted {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #ffebee;
+    color: #e53935;
+    border: 1px solid #ffcdd2;
+    border-radius: var(--radius-md);
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-clear-extracted:hover:not(:disabled) {
+    background-color: #ffcdd2;
+}
+
+.btn-clear-extracted:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .ships-grid,
@@ -149,9 +179,10 @@
 
 .ship-name,
 .contact-name {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-primary);
     font-size: 15px;
+    text-transform: uppercase;
 }
 
 .ship-imo {
@@ -170,54 +201,67 @@
 }
 
 /* Schedule Items within Card */
-.schedule-item {
+.schedule-item-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     margin-bottom: 12px;
-    padding: 8px;
-    background-color: var(--surface-hover);
-    /* Slight highlight for schedules */
-    border-radius: var(--radius-sm);
 }
 
-.schedule-item:last-child {
+.schedule-item-container:last-child {
     margin-bottom: 0;
 }
 
-.schedule-row {
+.schedule-block {
+    background-color: #f8fafc;
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
     display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 4px;
-    font-size: 13px;
+    flex-direction: column;
+    gap: 6px;
 }
 
-.icon-muted {
-    color: var(--text-tertiary);
-    margin-top: 2px;
+.schedule-block-main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.schedule-block-main .icon-muted {
+    color: #94a3b8;
     flex-shrink: 0;
 }
 
-.port-name {
-    font-weight: 600;
-    color: var(--primary-color);
+.schedule-block-main .label,
+.schedule-block-sub .label {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.schedule-block-main .port-name {
+    font-weight: 700;
+    color: #334155;
     flex: 1;
-    min-width: 0;
-    /* Critical for flex items to shrink below content size if needed, but here we want wrap */
     white-space: normal !important;
     overflow: visible !important;
     text-overflow: clip !important;
     overflow-wrap: anywhere !important;
     line-height: 1.4;
-    display: block;
-    /* Ensure block model for wrapping */
+    text-transform: uppercase;
 }
 
-.schedule-row .label {
-    color: var(--text-secondary);
+.schedule-block-sub {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    padding-left: 24px;
+    /* Align with text after icon */
 }
 
-.schedule-row .value {
-    color: var(--text-primary);
-    font-weight: 500;
+.schedule-block-sub .value {
+    color: #475569;
 }
 
 .schedule-remark-container {

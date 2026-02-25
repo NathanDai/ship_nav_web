@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '../../common/Modal/Modal';
-import { Ship, Anchor, Phone, Mail, User, PhoneCall, MessageCircle, Trash, Linkedin, Users } from 'lucide-react';
+import { Ship, Anchor, Phone, Mail, User, PhoneCall, MessageCircle, Trash, Linkedin, Users, Bot, Navigation } from 'lucide-react';
 import { cleanMail } from '../../../api/mailApi';
 import './MailDetailModal.css';
 
@@ -63,33 +63,24 @@ const MailDetailModal = ({ isOpen, onClose, mail, onViewDetails }) => {
                     {/* Right Column: Extracted Information */}
                     {(mail.extractedShipsInfo?.length > 0 || mail.extractedContactsInfo?.length > 0) && (
                         <div className="mail-secondary-column">
-                            <div className="mail-extracted-actions" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <button
-                                    className="btn-secondary"
-                                    onClick={handleClean}
-                                    disabled={cleaning}
-                                    style={{
-                                        color: 'var(--error-text)',
-                                        borderColor: 'var(--error-bg)',
-                                        background: 'transparent',
-                                        fontSize: '12px',
-                                        padding: '4px 10px',
-                                        height: 'auto'
-                                    }}
-                                >
-                                    <Trash size={14} />
-                                    {cleaning ? '清除中...' : '清除信息'}
-                                </button>
-                            </div>
-
                             <div className="mail-extracted-section">
                                 {/* Extracted Ships */}
                                 {mail.extractedShipsInfo?.length > 0 && (
                                     <div className="extracted-group">
-                                        <h3 className="extracted-title">
-                                            <Ship size={18} />
-                                            提取的船舶信息
-                                        </h3>
+                                        <div className="extracted-group-header">
+                                            <h3 className="extracted-title">
+                                                <Bot size={18} />
+                                                提取的船舶信息
+                                            </h3>
+                                            <button
+                                                className="btn-clear-extracted"
+                                                onClick={handleClean}
+                                                disabled={cleaning}
+                                            >
+                                                <Trash size={14} />
+                                                {cleaning ? '清除中...' : '清除信息'}
+                                            </button>
+                                        </div>
                                         <div className="ships-grid">
                                             {mail.extractedShipsInfo.map((ship, index) => (
                                                 <div key={index} className="ship-card">
@@ -114,16 +105,15 @@ const MailDetailModal = ({ isOpen, onClose, mail, onViewDetails }) => {
                                                     </div>
                                                     <div className="ship-schedules">
                                                         {ship.schedule?.map((item, idx) => (
-                                                            <div key={idx} className="schedule-item">
-                                                                {/* Helper to render a schedule row */}
+                                                            <div key={idx} className="schedule-item-container">
                                                                 {(item.open_port || item.open_region || item.open_laycan) && (
-                                                                    <div className="schedule-row-group">
-                                                                        <div className="schedule-row">
-                                                                            <Anchor size={14} className="icon-muted" />
+                                                                    <div className="schedule-block">
+                                                                        <div className="schedule-block-main">
+                                                                            <Anchor size={16} className="icon-muted" />
                                                                             <span className="label">OPEN 位置：</span>
                                                                             <span className="port-name">{item.open_port || item.open_region || '-'}</span>
                                                                         </div>
-                                                                        <div className="schedule-row">
+                                                                        <div className="schedule-block-sub">
                                                                             <span className="label">OPEN 日期：</span>
                                                                             <span className="value">{item.open_laycan || '-'}</span>
                                                                         </div>
@@ -131,13 +121,13 @@ const MailDetailModal = ({ isOpen, onClose, mail, onViewDetails }) => {
                                                                 )}
 
                                                                 {(item.eta_port || item.eta_region || item.eta_laycan) && (
-                                                                    <div className="schedule-row-group" style={{ marginTop: (item.open_port || item.open_laycan) ? '4px' : '0' }}>
-                                                                        <div className="schedule-row">
-                                                                            <Anchor size={14} className="icon-muted" />
+                                                                    <div className="schedule-block">
+                                                                        <div className="schedule-block-main">
+                                                                            <Navigation size={16} className="icon-muted" />
                                                                             <span className="label">ETA 位置：</span>
                                                                             <span className="port-name">{item.eta_port || item.eta_region || '-'}</span>
                                                                         </div>
-                                                                        <div className="schedule-row">
+                                                                        <div className="schedule-block-sub">
                                                                             <span className="label">ETA 日期：</span>
                                                                             <span className="value">{item.eta_laycan || '-'}</span>
                                                                         </div>
@@ -145,9 +135,9 @@ const MailDetailModal = ({ isOpen, onClose, mail, onViewDetails }) => {
                                                                 )}
 
                                                                 {item.trade_intent && (
-                                                                    <div className="schedule-row-group" style={{ marginTop: '4px' }}>
-                                                                        <div className="schedule-row">
-                                                                            <span className="label" style={{ marginLeft: '18px' }}>航线意向：</span>
+                                                                    <div className="schedule-block">
+                                                                        <div className="schedule-block-main">
+                                                                            <span className="label" style={{ marginLeft: '24px' }}>航线意向：</span>
                                                                             <span className="value">{item.trade_intent}</span>
                                                                         </div>
                                                                     </div>
@@ -178,10 +168,22 @@ const MailDetailModal = ({ isOpen, onClose, mail, onViewDetails }) => {
                                 {/* Extracted Contacts */}
                                 {mail.extractedContactsInfo?.length > 0 && (
                                     <div className="extracted-group">
-                                        <h3 className="extracted-title">
-                                            <User size={18} />
-                                            提取的联系信息
-                                        </h3>
+                                        <div className="extracted-group-header">
+                                            <h3 className="extracted-title">
+                                                <User size={18} />
+                                                提取的联系信息
+                                            </h3>
+                                            {!(mail.extractedShipsInfo?.length > 0) && (
+                                                <button
+                                                    className="btn-clear-extracted"
+                                                    onClick={handleClean}
+                                                    disabled={cleaning}
+                                                >
+                                                    <Trash size={14} />
+                                                    {cleaning ? '清除中...' : '清除信息'}
+                                                </button>
+                                            )}
+                                        </div>
                                         <div className="contacts-grid">
                                             {mail.extractedContactsInfo.map((contact, index) => (
                                                 <div key={index} className="contact-card">

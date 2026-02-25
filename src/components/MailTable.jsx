@@ -140,7 +140,7 @@ const MailTable = () => {
                     </div>
                     <button className="btn-secondary" onClick={handleRefresh}>
                         <RotateCcw size={16} />
-                        刷新
+                        刷新邮件
                     </button>
                     <button className="btn-primary" onClick={searchMails}>
                         搜索
