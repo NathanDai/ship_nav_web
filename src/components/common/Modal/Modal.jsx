@@ -10,7 +10,7 @@ import './Modal.css';
  * @param {string} className - 自定义类名
  * @param {object} style - 自定义样式
  */
-const Modal = ({ isOpen, onClose, children, className = '', style = {} }) => {
+const Modal = ({ isOpen, onClose, children, className = '', overlayClassName = '', style = {} }) => {
     // 清理副作用
     useEffect(() => {
         return () => {
@@ -21,7 +21,7 @@ const Modal = ({ isOpen, onClose, children, className = '', style = {} }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
+        <div className={`modal-overlay ${overlayClassName}`} onClick={onClose}>
             <div
                 className={`modal-content ${className}`}
                 onClick={e => e.stopPropagation()}

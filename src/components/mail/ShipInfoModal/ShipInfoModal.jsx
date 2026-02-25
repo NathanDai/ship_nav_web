@@ -103,6 +103,7 @@ export const ShipDetailModal = ({ isOpen, onClose, shipDetail }) => {
             isOpen={isOpen}
             onClose={onClose}
             className="ship-detail-modal-wrapper"
+            overlayClassName="ship-detail-modal-overlay"
         >
             <div className="sd-container">
                 {/* Header */}
