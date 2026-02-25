@@ -7,7 +7,7 @@ import './MailDetailModal.css';
 /**
  * Mail Detail Modal
  */
-const MailDetailModal = ({ isOpen, onClose, mail }) => {
+const MailDetailModal = ({ isOpen, onClose, mail, onViewDetails }) => {
     const [cleaning, setCleaning] = useState(false);
 
     if (!mail) return null;
@@ -95,7 +95,22 @@ const MailDetailModal = ({ isOpen, onClose, mail }) => {
                                                 <div key={index} className="ship-card">
                                                     <div className="ship-card-header">
                                                         <div className="ship-name">{ship.vessel_name}</div>
-                                                        <div className="ship-imo">IMO: {ship.imo}</div>
+                                                        <div className="ship-imo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                            IMO: {ship.imo}
+                                                            {ship.imo && onViewDetails && (
+                                                                <button
+                                                                    className="btn-link"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        onViewDetails(ship.imo);
+                                                                    }}
+                                                                    title="查看详细船舶信息"
+                                                                    style={{ fontSize: '12px', padding: 0, height: 'auto', minHeight: 'unset' }}
+                                                                >
+                                                                    查看详情
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                     <div className="ship-schedules">
                                                         {ship.schedule?.map((item, idx) => (

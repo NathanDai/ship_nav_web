@@ -245,6 +245,7 @@ const ShipSchedule = () => {
                 isOpen={mailDetailModal.isOpen}
                 onClose={mailDetailModal.closeModal}
                 mail={mailDetailModal.data}
+                onViewDetails={handleViewShipDetails}
             />
 
             {/* Toast Notification */}
